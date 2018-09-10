@@ -5,7 +5,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const outputDirectory = "dist";
 
 module.exports = {
-  entry: "./src/client/index.js",
+  entry: "./src/client/main.js",
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: "bundle.js"
@@ -24,7 +24,7 @@ module.exports = {
         use: ["style-loader", "css-loader"]
       },
       {
-        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        test: /\.(jpg|png|woff|woff2|eot|ttf|svg)$/,
         loader: "url-loader?limit=100000"
       }
     ]

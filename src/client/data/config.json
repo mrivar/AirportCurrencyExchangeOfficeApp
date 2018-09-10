@@ -1,0 +1,17 @@
+{
+	"homeCurrency": "USD",
+	"marginPct": 0.05,
+	"comissionPct": 0.05,
+	"surcharge": 0.05,
+	"minCommission": 0.05,
+	"currencies": [
+		{"name": "USD", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "EUR", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "CAD", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "GBP", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "AUD", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "INR", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "JPY", "initialBalance": 500, "fakeCurrencyRate":1},
+		{"name": "CNY", "initialBalance": 500, "fakeCurrencyRate":1}
+	]
+}
