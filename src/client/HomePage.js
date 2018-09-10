@@ -11,7 +11,7 @@ export class CurrencyRow extends React.Component {
 
   render() {
     const currency = this.props.currency;
-    let marginPct  = this.props.marginPct;
+    const marginPct  = this.props.marginPct;
     const buyRate  = currency.fakeCurrencyRate * (1 + marginPct);
     const sellRate = currency.fakeCurrencyRate * (1 - marginPct);
     const name     = currency.name;
@@ -32,19 +32,9 @@ export class CurrencyRow extends React.Component {
   }
 }
 
-export default class CurrencyTable extends React.Component {
+export class CurrencyTable extends React.Component {
   render() {
-    const rows = [];
-    let marginPct = this.props.config.marginPct;
-
-    this.props.config.currencies.forEach((currency) => {
-      rows.push(
-        <CurrencyRow
-          currency={currency}
-          marginPct={marginPct}
-          key={currency.name} />
-      );
-    });
+    const rows = this.props.rows;
 
     return (
       <table>
@@ -58,6 +48,54 @@ export default class CurrencyTable extends React.Component {
         </thead>
         <tbody>{rows}</tbody>
       </table>
+    );
+  }
+}
+
+export class InformationPanel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      balance: props.currency.initialBalance
+    };
+  }
+
+  render() {
+    const name = this.props.currency.name;
+    const balance = this.state.balance;
+
+    return (
+      <p>Exchange rate shown as per X. You have {balance} USD left.</p> 
+    );
+  }
+}
+
+export default class CurrencyTableContainer extends React.Component {
+  render() {
+    const config = this.props.config;
+    const rows = [];
+    const marginPct = this.props.config.marginPct;
+    const homeCurrency = this.props.config.homeCurrency;
+    let homeCurrencyInfo = {};
+
+    config.currencies.forEach((currency) => {
+      if (currency.name == homeCurrency) {
+        homeCurrencyInfo = currency;
+        return;
+      }
+      rows.push(
+        <CurrencyRow
+          currency={currency}
+          marginPct={marginPct}
+          key={currency.name} />
+      );
+    });
+
+    return (
+      <div>
+        <InformationPanel currency={homeCurrencyInfo} />
+        <CurrencyTable rows={rows} />
+      </div>
     );
   }
 }
