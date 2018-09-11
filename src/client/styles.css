@@ -1,6 +1,7 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans');
+@import url('https://fonts.googleapis.com/css?family=Proxima+Nova');
 body {
-  font-family: 'PT Sans';
+  font-family: 'Proxima Nova';
+  color: #444;
   float: left;
   width: 100%;
   text-align: center;
@@ -17,5 +18,5 @@ body {
 table {
   width: 80%;
   max-width: 1200px;
-  margin: auto;
+  margin: 40px auto 0;
 }
