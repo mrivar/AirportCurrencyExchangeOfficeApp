@@ -8,6 +8,11 @@ body {
   margin: auto;
 }
 
+#currencyContainer {
+  box-sizing: border-box;
+  padding: 20px;
+}
+
 #currencyContainer,
 #currencyContainer div{
   float: left;
@@ -15,8 +20,40 @@ body {
   text-align: center;
 }
 
-table {
-  width: 80%;
+#currencyContainer table {
+  width: 90%;
   max-width: 1200px;
-  margin: 40px auto 0;
+  margin: 30px auto 0;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+#currencyContainer table th,
+#currencyContainer table td {
+  padding: 5px;
+}
+
+#currencyContainer table th {
+  border-color: #CCC;
+  border-style: solid;
+  border-width: 1px 0;
+}
+
+#currencyContainer table tbody {
+  color: #666;
+}
+
+#currencyContainer table tbody tr:nth-of-type(odd) {
+  background-color: #EEE;
+}
+
+#currencyContainer table tbody tr:hover {
+  cursor: pointer;
+  background-color: #DDD;
+}
+
+@media screen and (max-width:500px) {
+  #currencyContainer table {
+    text-align: center;
+  }
 }

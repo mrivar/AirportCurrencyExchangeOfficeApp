@@ -47,19 +47,21 @@ header section button {
   border-width: 0 0 4px;
   border-color: #111;
   border-radius: 5px;
+  color: #111;
   cursor: pointer;
   font-weight: 555;
   margin: 0 5px;
   padding: 7px 20px;
-  -webkit-transition:0.25s all ease;
-  -o-transition:0.25s all ease;
-  -ms-transition:0.25s all ease;
-  -moz-transition:0.25s all ease;
+  -webkit-transition:0.3s all ease;
+  -o-transition:0.3s all ease;
+  -ms-transition:0.3s all ease;
+  -moz-transition:0.3s all ease;
 }
 
 header section button:hover {
   background-position: 100% 0%, 100% 110%;
   color:#EEE;
+  border-color: #FFF;
 }
 
 header section img {
@@ -82,7 +84,7 @@ header svg {
 
 @media screen and (max-width:500px) {
   header {
-    height: 150px;
+    height: 140px;
   }
 
   header #headerContainer{
