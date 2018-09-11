@@ -92,7 +92,7 @@ export default class CurrencyTableContainer extends React.Component {
     });
 
     return (
-      <div>
+      <div id="currencyContainer">
         <InformationPanel currency={homeCurrencyInfo} />
         <CurrencyTable rows={rows} />
       </div>

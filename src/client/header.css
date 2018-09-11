@@ -51,7 +51,7 @@ header section button {
   cursor: pointer;
   font-weight: 555;
   margin: 0 5px;
-  padding: 7px 20px;
+  padding: 8px 20px;
   -webkit-transition:0.3s all ease;
   -o-transition:0.3s all ease;
   -ms-transition:0.3s all ease;
@@ -60,7 +60,7 @@ header section button {
 
 header section button:hover {
   background-position: 100% 0%, 100% 110%;
-  color:#EEE;
+  color:#FFF;
   border-color: #FFF;
 }
 
