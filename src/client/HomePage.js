@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./styles.css";
+import "./css/styles.css";
 
 export class CurrencyRow extends React.Component {
   constructor(props) {
