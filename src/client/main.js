@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Switch, Route, BrowserRouter, withRouter } from 'react-router-dom'
 import CurrencyTableContainer from './HomePage';
 import AdminPage from './AdminPage';
 import Header from './Header';
@@ -10,7 +10,7 @@ import CONFIG from "./data/config.json";
 const Main = () => (
   <main>
     <Switch>
-      <Route exact path='/' render={(props) => (
+      <Route exact path='/' render={() => (
         <CurrencyTableContainer config={CONFIG} />
       )}/>
       <Route exact path='/admin' component={AdminPage} />
@@ -18,9 +18,11 @@ const Main = () => (
   </main>
 );
 
+const HeaderWithRouter = withRouter(props => <Header {...props}/>);
+
 const App = () => (
   <div>
-    <Header />
+    <HeaderWithRouter />
     <Main />
   </div>
 );

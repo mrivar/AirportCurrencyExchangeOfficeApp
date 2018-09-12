@@ -42,26 +42,34 @@ header section {
 header section button {
   background: linear-gradient(#111, #111), linear-gradient(#111, #111), #FDF003;
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-size: 100% 60%, 100% 50%, cover;
-  background-position: 100% -30px, 100% 30px, 100% 100%;
+  background-size: 100% 55%, 100% 55%, cover;
+  background-position: 100% -30px, 100% 33px, 100% 100%;
   border-color: #111;
   border-radius: 5px;
   border-style: solid;
-  border-width: 0 0 4px;
-  color: #111;
+  border-width: 0;
+  color: #888;
   cursor: pointer;
-  font-weight: 555;
   margin: 0 5px;
-  padding: 8px 20px;
+  padding: 9px 20px;
   -webkit-transition:0.3s all ease;
   -o-transition:0.3s all ease;
   -ms-transition:0.3s all ease;
   -moz-transition:0.3s all ease;
 }
 
+header section button.active {
+  color: #111;
+  border-width: 0 0 3px;
+}
+
 header section button:hover {
   background-position: 100% 0%, 100% 110%;
+  border-width: 0 0 3px;
   color:#FFF;
+}
+
+header section button.active:hover {
   border-color: #FFF;
 }
 
