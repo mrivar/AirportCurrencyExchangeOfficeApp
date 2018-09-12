@@ -1,19 +1,20 @@
 import React, { Component } from "react";
+import ExchangeModal from './ExchangeModal';
 import "./css/styles.css";
 
 export class CurrencyRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      balance: props.currency.initialBalance
+      balance: props.currency.initialBalance.toFixed(2)
     };
   }
 
   render() {
     const currency = this.props.currency;
     const marginPct  = this.props.marginPct;
-    const buyRate  = currency.fakeCurrencyRate * (1 + marginPct);
-    const sellRate = currency.fakeCurrencyRate * (1 - marginPct);
+    const buyRate  = (currency.fakeCurrencyRate * (1 + marginPct)).toFixed(4);
+    const sellRate = (currency.fakeCurrencyRate * (1 - marginPct)).toFixed(4);
     const name     = currency.name;
     const balance  = this.state.balance > currency.initialBalance*0.25 ?
       this.state.balance :
@@ -22,7 +23,7 @@ export class CurrencyRow extends React.Component {
       </span>;
 
     return (
-      <tr>
+      <tr onClick={this.props.openModal}>
         <td>{name}</td>
         <td>{buyRate}</td>
         <td>{sellRate}</td>
@@ -37,7 +38,7 @@ export class CurrencyTable extends React.Component {
     const rows = this.props.rows;
 
     return (
-      <table>
+      <table id="currencyTable">
         <thead>
           <tr>
             <th>Currency</th>
@@ -56,21 +57,42 @@ export class InformationPanel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      balance: props.currency.initialBalance
+      balance: props.homeCurrency.initialBalance.toFixed(2)
     };
   }
 
   render() {
-    const name = this.props.currency.name;
+    const name = this.props.homeCurrency.name;
     const balance = this.state.balance;
 
     return (
-      <p>Exchange rate shown as per X. You have {balance} USD left.</p> 
+      <p>Exchange rate shown as per X. You have {balance} {name} left.</p>
     );
   }
 }
 
-export default class CurrencyTableContainer extends React.Component {
+export default class HomePage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.openModal  = this.openModal.bind(this);
+    this.closeModal = this.closeModal.bind(this);
+    this.state = {
+      activateModal: false
+    };
+  }
+
+  openModal() {
+    this.setState({
+      activateModal: true
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      activateModal: false
+    });
+  }
+
   render() {
     const config = this.props.config;
     const rows = [];
@@ -87,13 +109,18 @@ export default class CurrencyTableContainer extends React.Component {
         <CurrencyRow
           currency={currency}
           marginPct={marginPct}
+          openModal={this.openModal}
           key={currency.name} />
       );
     });
 
     return (
       <div id="currencyContainer">
-        <InformationPanel currency={homeCurrencyInfo} />
+        <ExchangeModal
+          active={this.state.activateModal}
+          closeModal={this.closeModal}
+        />
+        <InformationPanel homeCurrency={homeCurrencyInfo} />
         <CurrencyTable rows={rows} />
       </div>
     );
