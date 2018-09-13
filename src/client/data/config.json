@@ -6,13 +6,13 @@
 	"minCommission": 2,
 	"refreshEveryInSeconds": 10,
 	"currencies": [
-		{"name": "USD", "initialBalance": 500, "currencyRate":1},
-		{"name": "EUR", "initialBalance": 500, "currencyRate":1},
-		{"name": "CAD", "initialBalance": 500, "currencyRate":1},
-		{"name": "GBP", "initialBalance": 500, "currencyRate":1},
-		{"name": "AUD", "initialBalance": 500, "currencyRate":1},
-		{"name": "INR", "initialBalance": 500, "currencyRate":1},
-		{"name": "JPY", "initialBalance": 500, "currencyRate":1},
-		{"name": "CNY", "initialBalance": 500, "currencyRate":1}
+		{"name": "USD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
+		{"name": "EUR", "initialBalance": 500, "currencyRate":1, "symbol":"€"},
+		{"name": "CAD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
+		{"name": "GBP", "initialBalance": 500, "currencyRate":1, "symbol":"£"},
+		{"name": "AUD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
+		{"name": "INR", "initialBalance": 500, "currencyRate":1, "symbol":"₹"},
+		{"name": "JPY", "initialBalance": 500, "currencyRate":1, "symbol":"¥"},
+		{"name": "CNY", "initialBalance": 500, "currencyRate":1, "symbol":"¥"}
 	]
 }

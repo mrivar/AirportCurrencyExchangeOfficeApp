@@ -120,6 +120,7 @@ export default class HomePage extends React.Component {
           config={this.props.config}
           modalCurrency={this.state.modalCurrency}
           modalCurrencyBalance={currencies[this.state.modalCurrency].balance}
+          modalCurrencySymbol={currencies[this.state.modalCurrency].symbol}
           homeCurrency={homeCurrency}
           homeCurrencyBalance={homeCurrencyInfo.balance}
           updateCurrencyBalance={this.props.updateCurrencyBalance}

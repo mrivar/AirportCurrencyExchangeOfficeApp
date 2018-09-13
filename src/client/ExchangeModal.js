@@ -97,7 +97,7 @@ export default class ExchangeModal extends React.Component {
           </div>
 
           <div className="modalInput">
-            <span>€</span>
+            <span>{this.props.modalCurrencySymbol}</span>
             <input 
               type="number"
               placeholder="100"
