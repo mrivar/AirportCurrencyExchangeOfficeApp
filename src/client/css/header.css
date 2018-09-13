@@ -52,10 +52,10 @@ header section button {
   cursor: pointer;
   margin: 0 5px;
   padding: 9px 20px;
-  -webkit-transition:0.3s all ease;
-  -o-transition:0.3s all ease;
-  -ms-transition:0.3s all ease;
-  -moz-transition:0.3s all ease;
+  -webkit-transition:0.5s all ease;
+  -o-transition:0.5s all ease;
+  -ms-transition:0.5s all ease;
+  -moz-transition:0.5s all ease;
 }
 
 header section button.active {
