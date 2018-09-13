@@ -43,7 +43,7 @@ header section button {
   background: linear-gradient(#111, #111), linear-gradient(#111, #111), #FDF003;
   background-repeat: no-repeat, no-repeat, no-repeat;
   background-size: 100% 55%, 100% 55%, cover;
-  background-position: 100% -30px, 100% 33px, 100% 100%;
+  background-position: 100% -35px, 100% 35px, 100% 100%;
   border-color: #111;
   border-radius: 5px;
   border-style: solid;
