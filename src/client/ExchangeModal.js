@@ -5,7 +5,7 @@ export class ExchangeModalTable extends React.Component {
     const exchangeRate = this.props.exchangeRate;
     const subtotal = this.props.subtotal;
     const commission = this.props.commission;
-    const total = subtotal + commission;
+    const total = this.props.total;
 
     return (
       <table>
@@ -33,8 +33,34 @@ export class ExchangeModalTable extends React.Component {
 }
 
 export default class ExchangeModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleQuantityChange = this.handleQuantityChange.bind(this)
+    this.state = {
+      quantity: 100
+    };
+  }
+
+  handleQuantityChange(e) {
+    this.setState({
+      quantity: e.target.value
+    });
+  }
+
   render() {
     const active = this.props.active ? 'active' : '';
+    const config = this.props.config;
+    const modalCurrency = this.props.modalCurrency;
+    let exchangeRate = '';
+    config.currencies.forEach((currency) => {
+      if(currency.name == modalCurrency){
+        exchangeRate = currency.currencyRate;
+        return;
+      }
+    });
+    const subtotal = exchangeRate * this.state.quantity;
+    const commission = Math.max(subtotal*config.comissionPct + config.surcharge, config.minCommission);
+    const total = subtotal + commission;
 
     return (
       <div id="lightbox" className={active}>
@@ -42,7 +68,7 @@ export default class ExchangeModal extends React.Component {
         <div className="modal">
 
           <div className="modalHead">
-            <p>Buy EUR</p>
+            <p>Buy {modalCurrency}</p>
             <p onClick={this.props.closeModal}>x</p>
           </div>
 
@@ -51,11 +77,18 @@ export default class ExchangeModal extends React.Component {
             <input 
               type="number"
               placeholder="100"
+              value={this.state.quantity}
+              onChange={this.handleQuantityChange}
             />
             <span>.00</span>
           </div>
 
-          <ExchangeModalTable exchangeRate={1} subtotal={1} commission={1} />
+          <ExchangeModalTable
+            exchangeRate={exchangeRate}
+            subtotal={subtotal}
+            commission={commission}
+            total={total}
+          />
 
           <div className="modalTail">
             <button>Buy</button>

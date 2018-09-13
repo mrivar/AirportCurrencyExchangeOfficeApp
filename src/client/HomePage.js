@@ -5,16 +5,21 @@ import "./css/styles.css";
 export class CurrencyRow extends React.Component {
   constructor(props) {
     super(props);
+    this.openModal = this.openModal.bind(this);
     this.state = {
       balance: props.currency.initialBalance.toFixed(2)
     };
   }
 
+  openModal() {
+    this.props.openModal(this.props.currency.name);
+  }
+
   render() {
     const currency = this.props.currency;
-    const marginPct  = this.props.marginPct;
-    const buyRate  = (currency.fakeCurrencyRate * (1 + marginPct)).toFixed(4);
-    const sellRate = (currency.fakeCurrencyRate * (1 - marginPct)).toFixed(4);
+    const marginPct= this.props.marginPct;
+    const buyRate  = (currency.currencyRate * (1 + marginPct)).toFixed(4);
+    const sellRate = (currency.currencyRate * (1 - marginPct)).toFixed(4);
     const name     = currency.name;
     const balance  = this.state.balance > currency.initialBalance*0.25 ?
       this.state.balance :
@@ -23,7 +28,7 @@ export class CurrencyRow extends React.Component {
       </span>;
 
     return (
-      <tr onClick={this.props.openModal}>
+      <tr onClick={this.openModal}>
         <td>{name}</td>
         <td>{buyRate}</td>
         <td>{sellRate}</td>
@@ -76,14 +81,17 @@ export default class HomePage extends React.Component {
     super(props);
     this.openModal  = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.config = this.props.config;
     this.state = {
-      activateModal: false
+      activateModal: false,
+      modalCurrency: ''
     };
   }
 
-  openModal() {
+  openModal(modalCurrency) {
     this.setState({
-      activateModal: true
+      activateModal: true,
+      modalCurrency: modalCurrency
     });
   }
 
@@ -94,13 +102,12 @@ export default class HomePage extends React.Component {
   }
 
   render() {
-    const config = this.props.config;
     const rows = [];
-    const marginPct = this.props.config.marginPct;
-    const homeCurrency = this.props.config.homeCurrency;
+    const marginPct = this.config.marginPct;
+    const homeCurrency = this.config.homeCurrency;
     let homeCurrencyInfo = {};
 
-    config.currencies.forEach((currency) => {
+    this.config.currencies.forEach((currency) => {
       if (currency.name == homeCurrency) {
         homeCurrencyInfo = currency;
         return;
@@ -119,6 +126,8 @@ export default class HomePage extends React.Component {
         <ExchangeModal
           active={this.state.activateModal}
           closeModal={this.closeModal}
+          config={this.config}
+          modalCurrency={this.state.modalCurrency}
         />
         <InformationPanel homeCurrency={homeCurrencyInfo} />
         <CurrencyTable rows={rows} />
