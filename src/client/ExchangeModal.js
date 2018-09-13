@@ -36,6 +36,7 @@ export default class ExchangeModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleQuantityChange = this.handleQuantityChange.bind(this)
+    this.buyCurrency = this.buyCurrency.bind(this)
     this.state = {
       quantity: 100
     };
@@ -45,6 +46,29 @@ export default class ExchangeModal extends React.Component {
     this.setState({
       quantity: e.target.value
     });
+  }
+
+  buyCurrency(total) {
+    const modalCurrency = this.props.modalCurrency;
+    const homeCurrency  = this.props.homeCurrency;
+
+    let modalCurrencyBalance = this.props.modalCurrencyBalance;
+    let homeCurrencyBalance  = this.props.homeCurrencyBalance;
+
+    modalCurrencyBalance -= this.state.quantity;
+    homeCurrencyBalance  -= total;
+
+    if(modalCurrencyBalance < 0) {
+      alert(`We run out of ${modalCurrency}. Unfortunately this transaction is not possible.`);
+      return;
+    }else if(homeCurrencyBalance < 0) {
+      alert(`You run out of ${homeCurrency}. Unfortunately this transaction is not possible.`);
+      return;
+    }
+
+    this.props.updateCurrencyBalance(modalCurrency, modalCurrencyBalance);
+    this.props.updateCurrencyBalance(homeCurrency, homeCurrencyBalance);
+    this.props.closeModal();
   }
 
   render() {
@@ -91,7 +115,7 @@ export default class ExchangeModal extends React.Component {
           />
 
           <div className="modalTail">
-            <button>Buy</button>
+            <button onClick={(e) => this.buyCurrency(total, e)}>Buy</button>
             <button onClick={this.props.closeModal}>Cancel</button>
           </div>
 

@@ -6,9 +6,6 @@ export class CurrencyRow extends React.Component {
   constructor(props) {
     super(props);
     this.openModal = this.openModal.bind(this);
-    this.state = {
-      balance: props.currency.initialBalance.toFixed(2)
-    };
   }
 
   openModal() {
@@ -21,10 +18,10 @@ export class CurrencyRow extends React.Component {
     const buyRate  = (currency.currencyRate * (1 + marginPct)).toFixed(4);
     const sellRate = (currency.currencyRate * (1 - marginPct)).toFixed(4);
     const name     = currency.name;
-    const balance  = this.state.balance > currency.initialBalance*0.25 ?
-      this.state.balance :
+    const balance  = currency.balance > currency.initialBalance*0.25 ?
+      currency.balance :
       <span style={{color: 'red'}}>
-        {this.state.balance}
+        {currency.balance}
       </span>;
 
     return (
@@ -59,16 +56,9 @@ export class CurrencyTable extends React.Component {
 }
 
 export class InformationPanel extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      balance: props.homeCurrency.initialBalance.toFixed(2)
-    };
-  }
-
   render() {
-    const name = this.props.homeCurrency.name;
-    const balance = this.state.balance;
+    const name = this.props.homeCurrencyInfo.name;
+    const balance = this.props.homeCurrencyInfo.balance;
 
     return (
       <p>Exchange rate shown as per X. You have {balance} {name} left.</p>
@@ -83,7 +73,7 @@ export default class HomePage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.state = {
       activateModal: false,
-      modalCurrency: ''
+      modalCurrency: 'USD'
     };
   }
 
@@ -129,8 +119,12 @@ export default class HomePage extends React.Component {
           closeModal={this.closeModal}
           config={this.props.config}
           modalCurrency={this.state.modalCurrency}
+          modalCurrencyBalance={currencies[this.state.modalCurrency].balance}
+          homeCurrency={homeCurrency}
+          homeCurrencyBalance={homeCurrencyInfo.balance}
+          updateCurrencyBalance={this.props.updateCurrencyBalance}
         />
-        <InformationPanel homeCurrency={homeCurrencyInfo} />
+        <InformationPanel homeCurrencyInfo={homeCurrencyInfo} />
         <CurrencyTable rows={rows} />
       </div>
     );

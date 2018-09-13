@@ -7,16 +7,29 @@ import CONFIG from './data/config.json';
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
+
     // create currency dictionary
     let currencies = CONFIG.currencies;
     let dict = {};
     currencies.forEach((currency) => {
       dict[currency.name] = currency;
+      dict[currency.name].balance = currency.initialBalance;
     });
+
+    this.updateCurrencyBalance = this.updateCurrencyBalance.bind(this);
+
     this.state = {
       config: CONFIG,
       currencies: dict
     };
+  }
+
+  updateCurrencyBalance(key, balance) {
+    let currencies = this.state.currencies;
+    currencies[key].balance = balance;
+    this.setState({
+       currencies: currencies
+    });
   }
 
   render() {
@@ -26,7 +39,8 @@ export default class Main extends React.Component {
           <Route exact path='/' render={() => (
             <HomePage
               config={this.state.config}
-              currencies={this.state.currencies}
+              currencies={this.state.currencies}ç
+              updateCurrencyBalance={this.updateCurrencyBalance}
             />
           )}/>
           <Route exact path='/admin' render={() => (
