@@ -81,7 +81,6 @@ export default class HomePage extends React.Component {
     super(props);
     this.openModal  = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.config = this.props.config;
     this.state = {
       activateModal: false,
       modalCurrency: ''
@@ -103,11 +102,13 @@ export default class HomePage extends React.Component {
 
   render() {
     const rows = [];
-    const marginPct = this.config.marginPct;
-    const homeCurrency = this.config.homeCurrency;
+    const currencies = this.props.currencies;
+    const marginPct  = this.props.config.marginPct;
+    const homeCurrency = this.props.config.homeCurrency;
     let homeCurrencyInfo = {};
 
-    this.config.currencies.forEach((currency) => {
+    Object.keys(currencies).map((key, index) => {
+      let currency = currencies[key];
       if (currency.name == homeCurrency) {
         homeCurrencyInfo = currency;
         return;
@@ -126,7 +127,7 @@ export default class HomePage extends React.Component {
         <ExchangeModal
           active={this.state.activateModal}
           closeModal={this.closeModal}
-          config={this.config}
+          config={this.props.config}
           modalCurrency={this.state.modalCurrency}
         />
         <InformationPanel homeCurrency={homeCurrencyInfo} />

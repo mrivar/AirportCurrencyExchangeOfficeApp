@@ -7,22 +7,16 @@ import CONFIG from './data/config.json';
 export default class Main extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      config: CONFIG,
-      currencies: {}
-    };
-  }
-
-  componentDidMount() {
     // create currency dictionary
-    let currencies = this.state.config.currencies;
+    let currencies = CONFIG.currencies;
     let dict = {};
     currencies.forEach((currency) => {
       dict[currency.name] = currency;
     });
-    this.setState({
-      currencies 
-    });
+    this.state = {
+      config: CONFIG,
+      currencies: dict
+    };
   }
 
   render() {

@@ -12,7 +12,7 @@ export class ExchangeModalTable extends React.Component {
         <tbody>
           <tr>
             <td>Exchange rate</td>
-            <td>{exchangeRate}</td>
+            <td>{exchangeRate.toFixed(2)}</td>
           </tr>
           <tr>
             <td>Subtotal</td>
@@ -51,7 +51,7 @@ export default class ExchangeModal extends React.Component {
     const active = this.props.active ? 'active' : '';
     const config = this.props.config;
     const modalCurrency = this.props.modalCurrency;
-    let exchangeRate = '';
+    let exchangeRate = 0;
     config.currencies.forEach((currency) => {
       if(currency.name == modalCurrency){
         exchangeRate = currency.currencyRate;
