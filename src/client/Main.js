@@ -33,10 +33,10 @@ export default class Main extends React.Component {
     });
   }
 
-  updateConfig(refreshEveryInSeconds, commission, surcharge, minCommission, marginPct) {
+  updateConfig(refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) {
     let config = this.state.config;
     config.refreshEveryInSeconds = refreshEveryInSeconds;
-    config.commission    = commission;
+    config.commissionPct = commissionPct;
     config.surcharge     = surcharge;
     config.minCommission = minCommission;
     config.marginPct     = marginPct;
