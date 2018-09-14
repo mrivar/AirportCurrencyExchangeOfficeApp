@@ -15,8 +15,8 @@ export class CurrencyRow extends React.Component {
   render() {
     const currency = this.props.currency;
     const marginPct= this.props.marginPct;
-    const buyRate  = (currency.currencyRate * (1 + marginPct)).toFixed(4);
-    const sellRate = (currency.currencyRate * (1 - marginPct)).toFixed(4);
+    const buyRate  = (currency.currencyRate * (1 + marginPct/100)).toFixed(4);
+    const sellRate = (currency.currencyRate * (1 - marginPct/100)).toFixed(4);
     const name     = currency.name;
     const balance  = currency.balance > currency.initialBalance*0.25 ?
       currency.balance :

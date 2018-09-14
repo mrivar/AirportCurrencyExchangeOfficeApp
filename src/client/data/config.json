@@ -1,9 +1,9 @@
 {
 	"homeCurrency": "USD",
-	"marginPct": 0.02,
-	"comissionPct": 0.02,
-	"surcharge": 1,
-	"minCommission": 2,
+	"marginPct": 2.00,
+	"commissionPct": 2.00,
+	"surcharge": 1.00,
+	"minCommission": 2.00,
 	"refreshEveryInSeconds": 10,
 	"currencies": [
 		{"name": "USD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},

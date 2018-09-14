@@ -83,7 +83,7 @@ export default class ExchangeModal extends React.Component {
       }
     });
     const subtotal = exchangeRate * this.state.quantity;
-    const commission = Math.max(subtotal*config.comissionPct + config.surcharge, config.minCommission);
+    const commission = Math.max(subtotal*config.commissionPct/100 + config.surcharge, config.minCommission);
     const total = subtotal + commission;
 
     return (
