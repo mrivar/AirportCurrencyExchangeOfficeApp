@@ -59,9 +59,13 @@ export class InformationPanel extends React.Component {
   render() {
     const name = this.props.homeCurrencyInfo.name;
     const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
+    let API_timestamp = this.props.API_timestamp;
+
+    // Translate timestamp to legible date
+    API_timestamp = `${API_timestamp.getFullYear()}/${API_timestamp.getMonth()+1}/${API_timestamp.getDate()} ${API_timestamp.getHours()}:${API_timestamp.getMinutes()}:${API_timestamp.getSeconds()}`
 
     return (
-      <p>Exchange rate shown as per X. You have {balance} {name} left.</p>
+      <p>Exchange rate shown as per {API_timestamp}. You have {balance} {name} left.</p>
     );
   }
 }
@@ -92,9 +96,10 @@ export default class HomePage extends React.Component {
 
   render() {
     const rows = [];
+    const config = this.props.config;
     const currencies = this.props.currencies;
-    const marginPct  = this.props.config.marginPct;
-    const homeCurrency = this.props.config.homeCurrency;
+    const marginPct  = config.marginPct;
+    const homeCurrency = config.homeCurrency;
     let homeCurrencyInfo = {};
 
     Object.keys(currencies).map((key, index) => {
@@ -117,7 +122,7 @@ export default class HomePage extends React.Component {
         <ExchangeModal
           active={this.state.activateModal}
           closeModal={this.closeModal}
-          config={this.props.config}
+          config={config}
           modalCurrency={this.state.modalCurrency}
           modalCurrencyBalance={currencies[this.state.modalCurrency].balance}
           modalCurrencySymbol={currencies[this.state.modalCurrency].symbol}
@@ -126,7 +131,10 @@ export default class HomePage extends React.Component {
           homeCurrencyBalance={homeCurrencyInfo.balance}
           updateCurrencyBalance={this.props.updateCurrencyBalance}
         />
-        <InformationPanel homeCurrencyInfo={homeCurrencyInfo} />
+        <InformationPanel
+          homeCurrencyInfo={homeCurrencyInfo}
+          API_timestamp={config.API_timestamp}
+        />
         <CurrencyTable rows={rows} />
       </div>
     );

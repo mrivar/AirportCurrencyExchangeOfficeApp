@@ -18,6 +18,7 @@ export default class Main extends React.Component {
       API_currencies += `${currency.name},`;
     });
     CONFIG.API_currencies = API_currencies.slice(0, -1);
+    CONFIG.API_timestamp  = new Date();
 
     // Bind functions
     this.updateCurrencyBalance = this.updateCurrencyBalance.bind(this);
@@ -59,15 +60,17 @@ export default class Main extends React.Component {
       .then((response) => response.json())
       .then(data => {
 
-        console.log(data);
         // Update exchange rates through API
         Object.keys(currencies).map((key, index) => {
           let currency_json_name = `${config.homeCurrency}${key}`;
           currencies[key].currencyRate = data.quotes[currency_json_name];
         });
 
+        config.API_timestamp = new Date(data.timestamp * 1000);
+
         // Update exchange rates in state
         this.setState({
+          config: config,
           currencies: currencies
         });
       })
