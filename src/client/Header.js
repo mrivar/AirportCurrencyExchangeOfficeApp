@@ -21,7 +21,7 @@ export class HeaderButton extends React.Component {
 export class HeaderLogo extends React.Component {
   render() {
     return (
-      <img src={require('./images/logo.jpg')} />
+      <img src={require('./images/logo.png')} />
     )
   }
 }

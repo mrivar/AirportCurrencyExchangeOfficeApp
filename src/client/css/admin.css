@@ -3,6 +3,7 @@
   src:url(../fonts/icomoon.ttf) format("truetype"),url(../fonts/icomoon.woff) format("woff");
   font-weight:400;
 }
+
 [class*=" icomoon-"],[class^=icomoon-]{
   font-family:icomoon!important;
   font-style:normal;
@@ -38,7 +39,7 @@ form section {
   max-width: 300px;
 }
 
-form p {
+form p{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -54,6 +55,14 @@ form input {
   padding:  5px 10px;
   height: 20px;
   width: 60px;
+}
+
+form p.refreshInput {
+  display: inline-block;
+}
+
+form p.refreshInput input {
+  margin: 0 10px;
 }
 
 form .settingsInput {
