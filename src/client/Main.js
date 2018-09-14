@@ -27,7 +27,8 @@ export default class Main extends React.Component {
 
     this.state = {
       config: CONFIG,
-      currencies: dict
+      currencies: dict,
+      timer: null
     };
 
     this.updateExchangeRates();
@@ -48,12 +49,16 @@ export default class Main extends React.Component {
     config.surcharge     = surcharge;
     config.minCommission = minCommission;
     config.marginPct     = marginPct;
+    clearInterval(this.state.timer);
+    let timer = setInterval(this.updateExchangeRates, this.state.config.refreshEveryInSeconds * 1000);
     this.setState({
-       config: config
+       config: config,
+       timer: timer
     });
   }
 
   updateExchangeRates() {
+    console.log('hey');
     let config = this.state.config;
     let currencies = this.state.currencies;
     fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
@@ -75,6 +80,17 @@ export default class Main extends React.Component {
         });
       })
       .catch(error => console.warn(error));
+  }
+
+  componentDidMount() {
+    let timer = setInterval(this.updateExchangeRates, this.state.config.refreshEveryInSeconds * 1000);
+    this.setState({
+      timer: timer
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.timer);
   }
 
   render() {

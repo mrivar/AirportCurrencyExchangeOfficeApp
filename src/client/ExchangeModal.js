@@ -12,7 +12,7 @@ export class ExchangeModalTable extends React.Component {
         <tbody>
           <tr>
             <td>Exchange rate</td>
-            <td>{exchangeRate.toFixed(2)}</td>
+            <td>{exchangeRate.toFixed(3)}</td>
           </tr>
           <tr>
             <td>Subtotal</td>
