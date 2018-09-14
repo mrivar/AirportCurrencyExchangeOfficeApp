@@ -58,7 +58,7 @@ export class CurrencyTable extends React.Component {
 export class InformationPanel extends React.Component {
   render() {
     const name = this.props.homeCurrencyInfo.name;
-    const balance = this.props.homeCurrencyInfo.balance;
+    const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
 
     return (
       <p>Exchange rate shown as per X. You have {balance} {name} left.</p>

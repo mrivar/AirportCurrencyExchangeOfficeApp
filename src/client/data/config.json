@@ -1,4 +1,5 @@
 {
+	"API_access_key": "d743a6fa0a5baac9794ba80bb1120d8c",
 	"homeCurrency": "USD",
 	"marginPct": 2.00,
 	"commissionPct": 2.00,
@@ -6,13 +7,13 @@
 	"minCommission": 2.00,
 	"refreshEveryInSeconds": 10,
 	"currencies": [
-		{"name": "USD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
-		{"name": "EUR", "initialBalance": 500, "currencyRate":1, "symbol":"€"},
-		{"name": "CAD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
-		{"name": "GBP", "initialBalance": 500, "currencyRate":1, "symbol":"£"},
-		{"name": "AUD", "initialBalance": 500, "currencyRate":1, "symbol":"$"},
-		{"name": "INR", "initialBalance": 500, "currencyRate":1, "symbol":"₹"},
-		{"name": "JPY", "initialBalance": 500, "currencyRate":1, "symbol":"¥"},
-		{"name": "CNY", "initialBalance": 500, "currencyRate":1, "symbol":"¥"}
+		{"name": "USD", "initialBalance": 2000, "currencyRate":1, "symbol":"$"},
+		{"name": "EUR", "initialBalance": 2000, "currencyRate":1, "symbol":"€"},
+		{"name": "CAD", "initialBalance": 2000, "currencyRate":1, "symbol":"$"},
+		{"name": "GBP", "initialBalance": 2000, "currencyRate":1, "symbol":"£"},
+		{"name": "AUD", "initialBalance": 2000, "currencyRate":1, "symbol":"$"},
+		{"name": "INR", "initialBalance": 150000, "currencyRate":1, "symbol":"₹"},
+		{"name": "JPY", "initialBalance": 200000, "currencyRate":1, "symbol":"¥"},
+		{"name": "CNY", "initialBalance": 15000, "currencyRate":1, "symbol":"¥"}
 	]
 }

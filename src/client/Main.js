@@ -8,21 +8,28 @@ export default class Main extends React.Component {
   constructor(props) {
     super(props);
 
-    // create currency dictionary
+    // Create currency dictionary & currency API list
     let currencies = CONFIG.currencies;
     let dict = {};
+    let API_currencies = "";
     currencies.forEach((currency) => {
       dict[currency.name] = currency;
       dict[currency.name].balance = currency.initialBalance;
+      API_currencies += `${currency.name},`;
     });
+    CONFIG.API_currencies = API_currencies.slice(0, -1);
 
+    // Bind functions
     this.updateCurrencyBalance = this.updateCurrencyBalance.bind(this);
     this.updateConfig = this.updateConfig.bind(this);
+    this.updateExchangeRates = this.updateExchangeRates.bind(this);
 
     this.state = {
       config: CONFIG,
       currencies: dict
     };
+
+    this.updateExchangeRates();
   }
 
   updateCurrencyBalance(key, balance) {
@@ -43,6 +50,28 @@ export default class Main extends React.Component {
     this.setState({
        config: config
     });
+  }
+
+  updateExchangeRates() {
+    let config = this.state.config;
+    let currencies = this.state.currencies;
+    fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
+      .then((response) => response.json())
+      .then(data => {
+
+        console.log(data);
+        // Update exchange rates through API
+        Object.keys(currencies).map((key, index) => {
+          let currency_json_name = `${config.homeCurrency}${key}`;
+          currencies[key].currencyRate = data.quotes[currency_json_name];
+        });
+
+        // Update exchange rates in state
+        this.setState({
+          currencies: currencies
+        });
+      })
+      .catch(error => console.warn(error));
   }
 
   render() {
