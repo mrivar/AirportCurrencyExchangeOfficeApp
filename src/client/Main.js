@@ -68,7 +68,17 @@ export default class Main extends React.Component {
         // Update exchange rates through API
         Object.keys(currencies).map((key, index) => {
           let currency_json_name = `${config.homeCurrency}${key}`;
+          let oldCurrencyRate = currencies[key].currencyRate;
           currencies[key].currencyRate = data.quotes[currency_json_name];
+
+          // Add stochastic randomness if currency exchange rate stays the same
+          if(oldCurrencyRate == currencies[key].currencyRate){
+            // Random number between -2% and 2%
+            let randomness = Math.floor((Math.random() * 2) + 1)/100;
+            randomness    *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+
+            currencies[key].currencyRate *= (1 + randomness);
+          }
         });
 
         config.API_timestamp = new Date(data.timestamp * 1000);
