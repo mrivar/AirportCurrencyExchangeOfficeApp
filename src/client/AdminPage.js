@@ -2,6 +2,25 @@ import React, { Component } from "react";
 import "./css/styles.css";
 import "./css/admin.css";
 
+export class AdminInput extends React.Component {
+  render() {
+    return(
+      <p>
+        {this.props.inputName}
+        <span className="settingsInput">
+          <input
+            type="number"
+            step=".01"
+            value={this.props.inputValue}
+            onChange={this.props.handleChange}
+          />
+          <span>{this.props.inputSymbol}</span>
+        </span>
+      </p>
+    )
+  }
+}
+
 export default class AdminPage extends React.Component {
   constructor(props) {
     super(props);
@@ -79,54 +98,30 @@ export default class AdminPage extends React.Component {
             seconds
           </p>
           <section>
-            <p>
-              Commission
-              <span className="settingsInput">
-                <input
-                  type="number"
-                  step=".01"
-                  value={this.state.commissionPct.toFixed(2)}
-                  onChange={this.handleCommissionPct}
-                />
-                <span>%</span>
-              </span>
-            </p>
-            <p>
-              Surcharge
-              <span className="settingsInput">
-                <input
-                  type="number"
-                  step=".01"
-                  value={this.state.surcharge.toFixed(2)}
-                  onChange={this.handleSurcharge}
-                />
-                <span>$</span>
-              </span>
-            </p>
-            <p>
-              Minimal Commission
-              <span className="settingsInput">
-                <input
-                  type="number"
-                  step=".01"
-                  value={this.state.minCommission.toFixed(2)}
-                  onChange={this.handleMinCommission}
-                />
-                <span>$</span>
-              </span>
-            </p>
-            <p>
-              Buy/sell rate margin
-              <span className="settingsInput">
-                <input
-                  type="number"
-                  step=".01"
-                  value={this.state.marginPct.toFixed(2)}
-                  onChange={this.handleMarginPct}
-                />
-                <span>%</span>
-              </span>
-            </p>
+            <AdminInput
+              inputName="Commission"
+              inputValue={this.state.commissionPct.toFixed(2)}
+              handleChange={this.handleCommissionPct}
+              inputSymbol="%"
+            />
+            <AdminInput
+              inputName="Surcharge"
+              inputValue={this.state.surcharge.toFixed(2)}
+              handleChange={this.handleSurcharge}
+              inputSymbol="$"
+            />
+            <AdminInput
+              inputName="Minimal Commission"
+              inputValue={this.state.minCommission.toFixed(2)}
+              handleChange={this.handleMinCommission}
+              inputSymbol="$"
+            />
+            <AdminInput
+              inputName="Buy/sell rate margin"
+              inputValue={this.state.marginPct.toFixed(2)}
+              handleChange={this.handleMarginPct}
+              inputSymbol="%"
+            />
             <button onClick={this.updateConfig}>
               Update
             </button>
