@@ -19,9 +19,9 @@ export class CurrencyRow extends React.Component {
     const sellRate = (currency.currencyRate * (1 - marginPct/100)).toFixed(4);
     const name     = currency.name;
     const balance  = currency.balance > currency.initialBalance*0.25 ?
-      currency.balance :
+      currency.balance.toFixed(2) :
       <span style={{color: 'red'}}>
-        {currency.balance}
+        {currency.balance.toFixed(2)}
       </span>;
 
     return (
@@ -121,6 +121,7 @@ export default class HomePage extends React.Component {
           modalCurrency={this.state.modalCurrency}
           modalCurrencyBalance={currencies[this.state.modalCurrency].balance}
           modalCurrencySymbol={currencies[this.state.modalCurrency].symbol}
+          modalCurrencyRate={currencies[this.state.modalCurrency].currencyRate}
           homeCurrency={homeCurrency}
           homeCurrencyBalance={homeCurrencyInfo.balance}
           updateCurrencyBalance={this.props.updateCurrencyBalance}

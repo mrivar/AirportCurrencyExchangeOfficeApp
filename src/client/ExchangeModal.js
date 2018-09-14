@@ -36,9 +36,11 @@ export default class ExchangeModal extends React.Component {
   constructor(props) {
     super(props);
     this.handleQuantityChange = this.handleQuantityChange.bind(this)
-    this.buyCurrency = this.buyCurrency.bind(this)
+    this.handleBuyOrSell = this.handleBuyOrSell.bind(this)
+    this.buyOrSellCurrency = this.buyOrSellCurrency.bind(this)
     this.state = {
-      quantity: 100
+      quantity: 100,
+      buyOrSell: 'Buy'
     };
   }
 
@@ -48,15 +50,31 @@ export default class ExchangeModal extends React.Component {
     });
   }
 
-  buyCurrency(total) {
+  handleBuyOrSell() {
+    let buyOrSell = this.state.buyOrSell;
+    if (buyOrSell == 'Buy')       buyOrSell = 'Sell';
+    else if (buyOrSell == 'Sell') buyOrSell = 'Buy';
+
+    this.setState({
+      buyOrSell: buyOrSell
+    });
+  }
+
+  buyOrSellCurrency(total) {
     const modalCurrency = this.props.modalCurrency;
     const homeCurrency  = this.props.homeCurrency;
+    const buyOrSell = this.state.buyOrSell;
 
     let modalCurrencyBalance = this.props.modalCurrencyBalance;
     let homeCurrencyBalance  = this.props.homeCurrencyBalance;
 
-    modalCurrencyBalance -= this.state.quantity;
-    homeCurrencyBalance  -= total;
+    if (buyOrSell == 'Buy'){
+      modalCurrencyBalance -= this.state.quantity;
+      homeCurrencyBalance  -= total;
+    }else if (buyOrSell == 'Sell'){
+      modalCurrencyBalance += this.state.quantity;
+      homeCurrencyBalance  += total;
+    }
 
     if(modalCurrencyBalance < 0) {
       alert(`We run out of ${modalCurrency}. Unfortunately this transaction is not possible.`);
@@ -73,15 +91,15 @@ export default class ExchangeModal extends React.Component {
 
   render() {
     const active = this.props.active ? 'active' : '';
+    const buyOrSell = this.state.buyOrSell;
     const config = this.props.config;
     const modalCurrency = this.props.modalCurrency;
-    let exchangeRate = 0;
-    config.currencies.forEach((currency) => {
-      if(currency.name == modalCurrency){
-        exchangeRate = currency.currencyRate;
-        return;
-      }
-    });
+    const marginPct= config.marginPct;
+    let exchangeRate = this.props.modalCurrencyRate;
+
+    if (buyOrSell == 'Buy')       exchangeRate *= 1 + marginPct/100;
+    else if (buyOrSell == 'Sell') exchangeRate *= 1 - marginPct/100;
+
     const subtotal = exchangeRate * this.state.quantity;
     const commission = Math.max(subtotal*config.commissionPct/100 + config.surcharge, config.minCommission);
     const total = subtotal + commission;
@@ -92,7 +110,7 @@ export default class ExchangeModal extends React.Component {
         <div className="modal">
 
           <div className="modalHead">
-            <p>Buy {modalCurrency}</p>
+            <p>{buyOrSell} {modalCurrency}</p>
             <p onClick={this.props.closeModal}>x</p>
           </div>
 
@@ -115,8 +133,14 @@ export default class ExchangeModal extends React.Component {
           />
 
           <div className="modalTail">
-            <button onClick={(e) => this.buyCurrency(total, e)}>Buy</button>
+            <button onClick={(e) => this.buyOrSellCurrency(total, e)}>{buyOrSell}</button>
             <button onClick={this.props.closeModal}>Cancel</button>
+            <div className="changeTwoOptions">
+              <span id="bg" className={buyOrSell}></span>
+              <span>Buy</span>
+              <p onClick={this.handleBuyOrSell}>⇋</p>
+              <span>Sell</span>
+            </div>
           </div>
 
         </div>
