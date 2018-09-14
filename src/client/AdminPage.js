@@ -86,7 +86,7 @@ export default class AdminPage extends React.Component {
     return(
       <div className="mainContainer">
         <form>
-          <h1>Settings</h1>
+          <h1><i className="icomoon-settings"></i>Settings</h1>
           <p>
             Refresh currency exchange rates every
             <input

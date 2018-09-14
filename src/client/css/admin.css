@@ -1,3 +1,19 @@
+@font-face{
+  font-family:icomoon;
+  src:url(../fonts/icomoon.ttf) format("truetype"),url(../fonts/icomoon.woff) format("woff");
+  font-weight:400;
+}
+[class*=" icomoon-"],[class^=icomoon-]{
+  font-family:icomoon!important;
+  font-style:normal;
+}
+
+.icomoon-settings:before{
+  content:"\e900";
+  font-size: 24px;
+  padding-right: 6px;
+}
+
 .mainContainer {
   width: 1100px;
   max-width: 100%;
