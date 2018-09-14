@@ -17,6 +17,7 @@ export default class Main extends React.Component {
     });
 
     this.updateCurrencyBalance = this.updateCurrencyBalance.bind(this);
+    this.updateConfig = this.updateConfig.bind(this);
 
     this.state = {
       config: CONFIG,
@@ -32,6 +33,18 @@ export default class Main extends React.Component {
     });
   }
 
+  updateConfig(refreshEveryInSeconds, commission, surcharge, minCommission, marginPct) {
+    let config = this.state.config;
+    config.refreshEveryInSeconds = refreshEveryInSeconds;
+    config.commission    = commission;
+    config.surcharge     = surcharge;
+    config.minCommission = minCommission;
+    config.marginPct     = marginPct;
+    this.setState({
+       config: config
+    });
+  }
+
   render() {
     return (
       <main>
@@ -39,12 +52,15 @@ export default class Main extends React.Component {
           <Route exact path='/' render={() => (
             <HomePage
               config={this.state.config}
-              currencies={this.state.currencies}ç
+              currencies={this.state.currencies}
               updateCurrencyBalance={this.updateCurrencyBalance}
             />
           )}/>
           <Route exact path='/admin' render={() => (
-            <AdminPage config={this.state.config} />
+            <AdminPage
+              config={this.state.config}
+              updateConfig={this.updateConfig}
+            />
           )}/>
         </Switch>
       </main>
