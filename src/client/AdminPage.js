@@ -11,6 +11,7 @@ export class AdminInput extends React.Component {
           <input
             type="number"
             step=".01"
+            min="0"
             value={this.props.inputValue}
             onChange={this.props.handleChange}
           />
@@ -92,6 +93,7 @@ export default class AdminPage extends React.Component {
             <input
               type="number"
               step="1"
+              min="0"
               value={this.state.refreshEveryInSeconds}
               onChange={this.handleRefreshEveryInSecondsOnChange}
             />
