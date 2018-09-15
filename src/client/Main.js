@@ -82,7 +82,9 @@ export default class Main extends React.Component {
           }
         });
 
-        config.API_timestamp = new Date(data.timestamp * 1000);
+        //config.API_timestamp = new Date(data.timestamp * 1000);
+        // Last exchange rate update should be the one above. As we are adding stochastic randomness we use this exact moment.
+        config.API_timestamp = new Date();
 
         // Update exchange rates in state
         this.setState({

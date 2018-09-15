@@ -10,7 +10,7 @@ export class AdminInput extends React.Component {
         <span className="settingsInput">
           <input
             type="number"
-            step=".01"
+            step=".1"
             min="0"
             value={this.props.inputValue}
             onChange={this.props.handleChange}

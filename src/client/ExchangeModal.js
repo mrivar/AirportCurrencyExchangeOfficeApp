@@ -69,10 +69,10 @@ export default class ExchangeModal extends React.Component {
     let homeCurrencyBalance  = this.props.homeCurrencyBalance;
 
     if (buyOrSell == 'Buy'){
-      modalCurrencyBalance -= this.state.quantity;
+      modalCurrencyBalance += parseFloat(this.state.quantity);
       homeCurrencyBalance  -= total;
     }else if (buyOrSell == 'Sell'){
-      modalCurrencyBalance += this.state.quantity;
+      modalCurrencyBalance -= parseFloat(this.state.quantity);
       homeCurrencyBalance  += total;
     }
 
@@ -80,7 +80,7 @@ export default class ExchangeModal extends React.Component {
       alert(`We run out of ${modalCurrency}. Unfortunately this transaction is not possible.`);
       return;
     }else if(homeCurrencyBalance < 0) {
-      alert(`You run out of ${homeCurrency}. Unfortunately this transaction is not possible.`);
+      alert(`You do not have enough ${homeCurrency} to complete this transaction.`);
       return;
     }
 

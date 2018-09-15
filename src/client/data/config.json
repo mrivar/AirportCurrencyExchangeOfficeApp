@@ -7,7 +7,7 @@
 	"minCommission": 2.00,
 	"refreshEveryInSeconds": 10,
 	"currencies": [
-		{"name": "USD", "initialBalance": 2000, "currencyRate":1, "symbol":"$"},
+		{"name": "USD", "initialBalance": 5000, "currencyRate":1, "symbol":"$"},
 		{"name": "EUR", "initialBalance": 2000, "currencyRate":1, "symbol":"€"},
 		{"name": "CAD", "initialBalance": 2000, "currencyRate":1, "symbol":"$"},
 		{"name": "GBP", "initialBalance": 2000, "currencyRate":1, "symbol":"£"},
