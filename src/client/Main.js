@@ -87,12 +87,19 @@ export default class Main extends React.Component {
         config.API_timestamp = new Date();
 
         // Update exchange rates in state
+        config.success = true;
         this.setState({
           config: config,
           currencies: currencies
         });
       })
-      .catch(error => console.warn(error));
+      .catch(error => {
+        console.warn(error);
+        config.success = false;
+        this.setState({
+          config: config
+        });
+      });
   }
 
   componentDidMount() {

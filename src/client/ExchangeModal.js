@@ -61,32 +61,37 @@ export default class ExchangeModal extends React.Component {
   }
 
   buyOrSellCurrency(total) {
-    const modalCurrency = this.props.modalCurrency;
-    const homeCurrency  = this.props.homeCurrency;
-    const buyOrSell = this.state.buyOrSell;
+    const success = this.props.config.success;
+    if (success == false) {
+      alert('There was an error while retrieving the currencies exchange rates. Transactions are not allowed while we solve this problem.');
+    }else{
+      const modalCurrency = this.props.modalCurrency;
+      const homeCurrency  = this.props.homeCurrency;
+      const buyOrSell = this.state.buyOrSell;
 
-    let modalCurrencyBalance = this.props.modalCurrencyBalance;
-    let homeCurrencyBalance  = this.props.homeCurrencyBalance;
+      let modalCurrencyBalance = this.props.modalCurrencyBalance;
+      let homeCurrencyBalance  = this.props.homeCurrencyBalance;
 
-    if (buyOrSell == 'Buy'){
-      modalCurrencyBalance += parseFloat(this.state.quantity);
-      homeCurrencyBalance  -= total;
-    }else if (buyOrSell == 'Sell'){
-      modalCurrencyBalance -= parseFloat(this.state.quantity);
-      homeCurrencyBalance  += total;
+      if (buyOrSell == 'Buy'){
+        modalCurrencyBalance += parseFloat(this.state.quantity);
+        homeCurrencyBalance  -= total;
+      }else if (buyOrSell == 'Sell'){
+        modalCurrencyBalance -= parseFloat(this.state.quantity);
+        homeCurrencyBalance  += total;
+      }
+
+      if(modalCurrencyBalance < 0) {
+        alert(`We run out of ${modalCurrency}. Unfortunately this transaction is not possible.`);
+        return;
+      }else if(homeCurrencyBalance < 0) {
+        alert(`You do not have enough ${homeCurrency} to complete this transaction.`);
+        return;
+      }
+
+      this.props.updateCurrencyBalance(modalCurrency, modalCurrencyBalance);
+      this.props.updateCurrencyBalance(homeCurrency, homeCurrencyBalance);
+      this.props.closeModal();
     }
-
-    if(modalCurrencyBalance < 0) {
-      alert(`We run out of ${modalCurrency}. Unfortunately this transaction is not possible.`);
-      return;
-    }else if(homeCurrencyBalance < 0) {
-      alert(`You do not have enough ${homeCurrency} to complete this transaction.`);
-      return;
-    }
-
-    this.props.updateCurrencyBalance(modalCurrency, modalCurrencyBalance);
-    this.props.updateCurrencyBalance(homeCurrency, homeCurrencyBalance);
-    this.props.closeModal();
   }
 
   render() {

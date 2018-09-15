@@ -13,10 +13,15 @@ export class CurrencyRow extends React.Component {
   }
 
   render() {
+    const success = this.props.success;
     const currency = this.props.currency;
     const marginPct= this.props.marginPct;
-    const buyRate  = (currency.currencyRate * (1 + marginPct/100)).toFixed(4);
-    const sellRate = (currency.currencyRate * (1 - marginPct/100)).toFixed(4);
+    let buyRate  = <span style={{color: 'red'}}>ERR</span>;
+    let sellRate = <span style={{color: 'red'}}>ERR</span>;
+    if (success == true) {
+      buyRate  = (currency.currencyRate * (1 + marginPct/100)).toFixed(4);
+      sellRate = (currency.currencyRate * (1 - marginPct/100)).toFixed(4);
+    }
     const name     = currency.name;
     const balance  = currency.balance > currency.initialBalance*0.25 ?
       currency.balance.toFixed(2) :
@@ -57,16 +62,24 @@ export class CurrencyTable extends React.Component {
 
 export class InformationPanel extends React.Component {
   render() {
-    const name = this.props.homeCurrencyInfo.name;
-    const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
-    let API_timestamp = this.props.API_timestamp;
+    const success = this.props.success;
+    if (success == true) {
+      const name = this.props.homeCurrencyInfo.name;
+      const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
+      let API_timestamp = this.props.API_timestamp;
 
-    // Translate timestamp to legible date
-    API_timestamp = `${API_timestamp.getFullYear()}/${API_timestamp.getMonth()+1}/${API_timestamp.getDate()} ${API_timestamp.getHours()}:${API_timestamp.getMinutes()}:${API_timestamp.getSeconds()}`
+      // Translate timestamp to legible date
+      API_timestamp = `${API_timestamp.getFullYear()}/${API_timestamp.getMonth()+1}/${API_timestamp.getDate()} ${API_timestamp.getHours()}:${API_timestamp.getMinutes()}:${API_timestamp.getSeconds()}`
 
-    return (
-      <p>Exchange rate shown as per {API_timestamp}. You have {balance} {name} left.</p>
-    );
+      return (
+        <p>Exchange rate shown as per {API_timestamp}. You have {balance} {name} left.</p>
+      );
+    }else{
+      return (
+        <p style={{color : 'red'}}>There was an error while retrieving the currencies exchange rates.<br />
+        Transactions are not allowed while we solve this problem.</p>
+      );
+    }
   }
 }
 
@@ -113,6 +126,7 @@ export default class HomePage extends React.Component {
           currency={currency}
           marginPct={marginPct}
           openModal={this.openModal}
+          success={config.success}
           key={currency.name} />
       );
     });
@@ -134,6 +148,7 @@ export default class HomePage extends React.Component {
         <InformationPanel
           homeCurrencyInfo={homeCurrencyInfo}
           API_timestamp={config.API_timestamp}
+          success={config.success}
         />
         <CurrencyTable rows={rows} />
       </div>
