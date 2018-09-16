@@ -57,7 +57,7 @@ export default class Main extends React.Component {
   updateExchangeRates = () => {
     const config = this.state.config;
     const currencies = this.state.currencies;
-    fetch(`https://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
+    fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
       .then((response) => response.json())
       .then(data => {
 
