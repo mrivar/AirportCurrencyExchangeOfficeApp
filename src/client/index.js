@@ -13,11 +13,6 @@ class App extends React.Component{
     password: ""
   }
 
-  shouldComponentUpdate(nextProps) {
-    if (this.state.login === true) return false;
-    return true;
-  }
-
   login = (password) => {
     // Hash password
     let hash = 0;
