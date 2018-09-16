@@ -37,18 +37,8 @@ export default class ExchangeModal extends React.Component {
     super(props);
     this.state = {
       quantity: 100,
-      buyOrSell: 'Buy'
+      isBuying: true
     };
-  }
-
-  handleBuyOrSell = () => {
-    let buyOrSell = this.state.buyOrSell;
-    if (buyOrSell == 'Buy')       buyOrSell = 'Sell';
-    else if (buyOrSell == 'Sell') buyOrSell = 'Buy';
-
-    this.setState({
-      buyOrSell: buyOrSell
-    });
   }
 
   buyOrSellCurrency = (total) => {
@@ -58,15 +48,15 @@ export default class ExchangeModal extends React.Component {
     }else{
       const modalCurrency = this.props.modalCurrency;
       const homeCurrency  = this.props.homeCurrency;
-      const buyOrSell = this.state.buyOrSell;
+      const isBuying = this.state.isBuying;
 
       let modalCurrencyBalance = this.props.modalCurrencyBalance;
       let homeCurrencyBalance  = this.props.homeCurrencyBalance;
 
-      if (buyOrSell == 'Buy'){
+      if (isBuying){
         modalCurrencyBalance += parseFloat(this.state.quantity);
         homeCurrencyBalance  -= total;
-      }else if (buyOrSell == 'Sell'){
+      }else{
         modalCurrencyBalance -= parseFloat(this.state.quantity);
         homeCurrencyBalance  += total;
       }
@@ -87,14 +77,15 @@ export default class ExchangeModal extends React.Component {
 
   render() {
     const active = this.props.active ? 'active' : '';
-    const buyOrSell = this.state.buyOrSell;
+    const isBuying = this.state.isBuying;
+    const buyOrSell = isBuying ? 'Buy' : 'Sell';
     const config = this.props.config;
     const modalCurrency = this.props.modalCurrency;
     const marginPct= config.marginPct;
     let exchangeRate = this.props.modalCurrencyRate;
 
-    if (buyOrSell == 'Buy')       exchangeRate *= 1 + marginPct/100;
-    else if (buyOrSell == 'Sell') exchangeRate *= 1 - marginPct/100;
+    if (isBuying) exchangeRate *= 1 + marginPct/100;
+    else          exchangeRate *= 1 - marginPct/100;
 
     const subtotal = exchangeRate * this.state.quantity;
     const commission = Math.max(subtotal*config.commissionPct/100 + config.surcharge, config.minCommission);
@@ -134,7 +125,7 @@ export default class ExchangeModal extends React.Component {
             <div className="changeTwoOptions">
               <span id="bg" className={buyOrSell}></span>
               <span>Buy</span>
-              <p onClick={this.handleBuyOrSell}>⇋</p>
+              <p onClick={(e) => this.setState(prevState => ({isBuying: !prevState.isBuying}))}>⇋</p>
               <span>Sell</span>
             </div>
           </div>
