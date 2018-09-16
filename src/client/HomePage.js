@@ -65,7 +65,7 @@ export class InformationPanel extends React.PureComponent {
       let API_timestamp = this.props.API_timestamp;
 
       // Translate timestamp to legible date
-      API_timestamp = `${API_timestamp.getFullYear()}/${API_timestamp.getMonth()+1}/${API_timestamp.getDate()} ${API_timestamp.getHours()}:${API_timestamp.getMinutes()}:${API_timestamp.getSeconds()}`
+      API_timestamp = `${API_timestamp.getFullYear()}/${API_timestamp.getMonth()+1}/${API_timestamp.getDate()} ${API_timestamp.getHours()}:${API_timestamp.getMinutes()< 10 ? '0' : ''}${API_timestamp.getMinutes()}:${API_timestamp.getSeconds()< 10 ? '0' : ''}${API_timestamp.getSeconds()}`
 
       return (
         <p>Exchange rate shown as per {API_timestamp}. You have {balance} {name} left.</p>
