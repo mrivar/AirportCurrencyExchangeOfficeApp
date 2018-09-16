@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./css/styles.css";
 import "./css/admin.css";
 
 export class AdminInput extends React.Component {
