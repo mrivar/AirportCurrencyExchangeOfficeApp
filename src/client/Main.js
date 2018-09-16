@@ -9,8 +9,8 @@ export default class Main extends React.Component {
     super(props);
 
     // Create currency dictionary & currency API list
-    let currencies = CONFIG.currencies;
-    let dict = {};
+    const currencies = CONFIG.currencies;
+    const dict = {};
     let API_currencies = "";
     currencies.forEach((currency) => {
       dict[currency.name] = currency;
@@ -30,7 +30,7 @@ export default class Main extends React.Component {
   }
 
   updateCurrencyBalance = (key, balance) => {
-    let currencies = this.state.currencies;
+    const currencies = this.state.currencies;
     currencies[key].balance = balance;
     this.setState({
        currencies: currencies
@@ -38,7 +38,7 @@ export default class Main extends React.Component {
   }
 
   updateConfig = (refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) => {
-    let config = this.state.config;
+    const config = this.state.config;
     if(refreshEveryInSeconds >= 0) config.refreshEveryInSeconds = refreshEveryInSeconds;
     if(commissionPct >= 0)         config.commissionPct = commissionPct;
     if(surcharge >= 0)             config.surcharge     = surcharge;
@@ -46,7 +46,7 @@ export default class Main extends React.Component {
     if(marginPct >= 0)             config.marginPct     = marginPct;
     clearInterval(this.state.timer);
     if (refreshEveryInSeconds > 0) {
-      let timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
+      const timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
       this.setState({
          config: config,
          timer: timer
@@ -55,23 +55,23 @@ export default class Main extends React.Component {
   }
 
   updateExchangeRates = () => {
-    let config = this.state.config;
-    let currencies = this.state.currencies;
+    const config = this.state.config;
+    const currencies = this.state.currencies;
     fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
       .then((response) => response.json())
       .then(data => {
 
         // Update exchange rates through API
         Object.keys(currencies).map((key, index) => {
-          let currency_json_name = `${config.homeCurrency}${key}`;
-          let oldCurrencyRate = currencies[key].currencyRate;
+          const currency_json_name = `${config.homeCurrency}${key}`;
+          const oldCurrencyRate = currencies[key].currencyRate;
           currencies[key].currencyRate = 1/data.quotes[currency_json_name];
 
           // Add stochastic randomness if currency exchange rate stays the same
-          if(oldCurrencyRate == currencies[key].currencyRate){
+          if(oldCurrencyRate === currencies[key].currencyRate){
             // Random number between -2% and 2%
             let randomness = Math.floor((Math.random() * 2) + 1)/100;
-            randomness    *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+            randomness    *= Math.floor(Math.random() * 2) === 1 ? 1 : -1;
 
             currencies[key].currencyRate *= (1 + randomness);
           }
@@ -100,7 +100,7 @@ export default class Main extends React.Component {
   componentDidMount() {
     const refreshEveryInSeconds = this.state.config.refreshEveryInSeconds;
     if (refreshEveryInSeconds > 0) {
-      let timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
+      const timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
       this.setState({
         timer: timer
       });

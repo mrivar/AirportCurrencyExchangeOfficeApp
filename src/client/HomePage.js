@@ -14,7 +14,7 @@ export class CurrencyRow extends React.Component {
     const marginPct= this.props.marginPct;
     let buyRate  = <span style={{color: 'red'}}>ERR</span>;
     let sellRate = <span style={{color: 'red'}}>ERR</span>;
-    if (success == true) {
+    if (success === true) {
       buyRate  = (currency.currencyRate * (1 + marginPct/100)).toFixed(4);
       sellRate = (currency.currencyRate * (1 - marginPct/100)).toFixed(4);
     }
@@ -59,7 +59,7 @@ export class CurrencyTable extends React.Component {
 export class InformationPanel extends React.Component {
   render() {
     const success = this.props.success;
-    if (success == true) {
+    if (success === true) {
       const name = this.props.homeCurrencyInfo.name;
       const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
       let API_timestamp = this.props.API_timestamp;
@@ -80,12 +80,9 @@ export class InformationPanel extends React.Component {
 }
 
 export default class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      activateModal: false,
-      modalCurrency: 'USD'
-    };
+  state = {
+    activateModal: false,
+    modalCurrency: 'USD'
   }
 
   openModal = (modalCurrency) => {
@@ -110,8 +107,8 @@ export default class HomePage extends React.Component {
     let homeCurrencyInfo = {};
 
     Object.keys(currencies).map((key, index) => {
-      let currency = currencies[key];
-      if (currency.name == homeCurrency) {
+      const currency = currencies[key];
+      if (currency.name === homeCurrency) {
         homeCurrencyInfo = currency;
         return;
       }

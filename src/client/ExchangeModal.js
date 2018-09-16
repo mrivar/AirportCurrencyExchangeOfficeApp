@@ -33,17 +33,14 @@ export class ExchangeModalTable extends React.Component {
 }
 
 export default class ExchangeModal extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      quantity: 100,
-      isBuying: true
-    };
+  state = {
+    quantity: 100,
+    isBuying: true
   }
 
   buyOrSellCurrency = (total) => {
     const success = this.props.config.success;
-    if (success == false) {
+    if (success === false) {
       alert('There was an error while retrieving the currencies exchange rates. Transactions are not allowed while we solve this problem.');
     }else{
       const modalCurrency = this.props.modalCurrency;

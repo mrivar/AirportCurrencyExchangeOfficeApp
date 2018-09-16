@@ -26,7 +26,7 @@ export default class AdminPage extends React.Component {
   constructor(props) {
     super(props);
 
-    let config = this.props.config;
+    const config = this.props.config;
     this.state = {
       refreshEveryInSeconds : config.refreshEveryInSeconds,
       commissionPct : config.commissionPct,
@@ -36,7 +36,7 @@ export default class AdminPage extends React.Component {
     }
   }
 
-  updateConfig(e){
+  updateConfig = (e) => {
     e.preventDefault();
     this.props.updateConfig(
       this.state.refreshEveryInSeconds,

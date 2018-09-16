@@ -6,7 +6,7 @@ export class HeaderButton extends React.Component {
   render() {
     const buttonName = this.props.buttonName;
     const url = this.props.url;
-    const active = this.props.currentPath == url ? 'active' : '';
+    const active = this.props.currentPath === url ? 'active' : '';
 
     return (
       <Link to={url}>
