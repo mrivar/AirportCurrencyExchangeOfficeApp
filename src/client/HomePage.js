@@ -3,12 +3,8 @@ import ExchangeModal from './ExchangeModal';
 import "./css/styles.css";
 
 export class CurrencyRow extends React.Component {
-  constructor(props) {
-    super(props);
-    this.openModal = this.openModal.bind(this);
-  }
 
-  openModal() {
+  openModal = () => {
     this.props.openModal(this.props.currency.name);
   }
 
@@ -86,22 +82,20 @@ export class InformationPanel extends React.Component {
 export default class HomePage extends React.Component {
   constructor(props) {
     super(props);
-    this.openModal  = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
     this.state = {
       activateModal: false,
       modalCurrency: 'USD'
     };
   }
 
-  openModal(modalCurrency) {
+  openModal = (modalCurrency) => {
     this.setState({
       activateModal: true,
       modalCurrency: modalCurrency
     });
   }
 
-  closeModal() {
+  closeModal = () => {
     this.setState({
       activateModal: false
     });

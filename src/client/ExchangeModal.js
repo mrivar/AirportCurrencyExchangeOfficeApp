@@ -35,22 +35,13 @@ export class ExchangeModalTable extends React.Component {
 export default class ExchangeModal extends React.Component {
   constructor(props) {
     super(props);
-    this.handleQuantityChange = this.handleQuantityChange.bind(this)
-    this.handleBuyOrSell = this.handleBuyOrSell.bind(this)
-    this.buyOrSellCurrency = this.buyOrSellCurrency.bind(this)
     this.state = {
       quantity: 100,
       buyOrSell: 'Buy'
     };
   }
 
-  handleQuantityChange(e) {
-    this.setState({
-      quantity: e.target.value
-    });
-  }
-
-  handleBuyOrSell() {
+  handleBuyOrSell = () => {
     let buyOrSell = this.state.buyOrSell;
     if (buyOrSell == 'Buy')       buyOrSell = 'Sell';
     else if (buyOrSell == 'Sell') buyOrSell = 'Buy';
@@ -60,7 +51,7 @@ export default class ExchangeModal extends React.Component {
     });
   }
 
-  buyOrSellCurrency(total) {
+  buyOrSellCurrency = (total) => {
     const success = this.props.config.success;
     if (success == false) {
       alert('There was an error while retrieving the currencies exchange rates. Transactions are not allowed while we solve this problem.');
@@ -125,7 +116,7 @@ export default class ExchangeModal extends React.Component {
               type="number"
               placeholder="100"
               value={this.state.quantity}
-              onChange={this.handleQuantityChange}
+              onChange={e => this.setState({quantity: e.target.value})}
             />
             <span>.00</span>
           </div>

@@ -20,11 +20,6 @@ export default class Main extends React.Component {
     CONFIG.API_currencies = API_currencies.slice(0, -1);
     CONFIG.API_timestamp  = new Date();
 
-    // Bind functions
-    this.updateCurrencyBalance = this.updateCurrencyBalance.bind(this);
-    this.updateConfig = this.updateConfig.bind(this);
-    this.updateExchangeRates = this.updateExchangeRates.bind(this);
-
     this.state = {
       config: CONFIG,
       currencies: dict,
@@ -34,7 +29,7 @@ export default class Main extends React.Component {
     this.updateExchangeRates();
   }
 
-  updateCurrencyBalance(key, balance) {
+  updateCurrencyBalance = (key, balance) => {
     let currencies = this.state.currencies;
     currencies[key].balance = balance;
     this.setState({
@@ -42,7 +37,7 @@ export default class Main extends React.Component {
     });
   }
 
-  updateConfig(refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) {
+  updateConfig = (refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) => {
     let config = this.state.config;
     if(refreshEveryInSeconds >= 0) config.refreshEveryInSeconds = refreshEveryInSeconds;
     if(commissionPct >= 0)         config.commissionPct = commissionPct;
@@ -59,7 +54,7 @@ export default class Main extends React.Component {
     }
   }
 
-  updateExchangeRates() {
+  updateExchangeRates = () => {
     let config = this.state.config;
     let currencies = this.state.currencies;
     fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)

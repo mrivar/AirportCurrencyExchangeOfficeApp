@@ -25,12 +25,6 @@ export class AdminInput extends React.Component {
 export default class AdminPage extends React.Component {
   constructor(props) {
     super(props);
-    this.updateConfig = this.updateConfig.bind(this);
-    this.handleRefreshEveryInSecondsOnChange = this.handleRefreshEveryInSecondsOnChange.bind(this);
-    this.handleCommissionPct = this.handleCommissionPct.bind(this);
-    this.handleSurcharge = this.handleSurcharge.bind(this);
-    this.handleMinCommission = this.handleMinCommission.bind(this);
-    this.handleMarginPct = this.handleMarginPct.bind(this);
 
     let config = this.props.config;
     this.state = {
@@ -40,36 +34,6 @@ export default class AdminPage extends React.Component {
       minCommission : config.minCommission,
       marginPct : config.marginPct,
     }
-  }
-
-  handleRefreshEveryInSecondsOnChange(e) {
-    this.setState({
-      refreshEveryInSeconds: e.target.value
-    });
-  }
-
-  handleCommissionPct(e) {
-    this.setState({
-      commissionPct: parseFloat(e.target.value)
-    });
-  }
-
-  handleSurcharge(e) {
-    this.setState({
-      surcharge: parseFloat(e.target.value)
-    });
-  }
-
-  handleMinCommission(e) {
-    this.setState({
-      minCommission: parseFloat(e.target.value)
-    });
-  }
-
-  handleMarginPct(e) {
-    this.setState({
-      marginPct: parseFloat(e.target.value)
-    });
   }
 
   updateConfig(e){
@@ -95,7 +59,7 @@ export default class AdminPage extends React.Component {
               step="1"
               min="0"
               value={this.state.refreshEveryInSeconds}
-              onChange={this.handleRefreshEveryInSecondsOnChange}
+              onChange={e => this.setState({refreshEveryInSeconds: e.target.value})}
             />
             seconds
           </p>
@@ -103,25 +67,25 @@ export default class AdminPage extends React.Component {
             <AdminInput
               inputName="Commission"
               inputValue={this.state.commissionPct.toFixed(2)}
-              handleChange={this.handleCommissionPct}
+              handleChange={e => this.setState({commissionPct: parseFloat(e.target.value)})}
               inputSymbol="%"
             />
             <AdminInput
               inputName="Surcharge"
               inputValue={this.state.surcharge.toFixed(2)}
-              handleChange={this.handleSurcharge}
+              handleChange={e => this.setState({surcharge: parseFloat(e.target.value)})}
               inputSymbol="$"
             />
             <AdminInput
               inputName="Minimal Commission"
               inputValue={this.state.minCommission.toFixed(2)}
-              handleChange={this.handleMinCommission}
+              handleChange={e => this.setState({minCommission: parseFloat(e.target.value)})}
               inputSymbol="$"
             />
             <AdminInput
               inputName="Buy/sell rate margin"
               inputValue={this.state.marginPct.toFixed(2)}
-              handleChange={this.handleMarginPct}
+              handleChange={e => this.setState({marginPct: parseFloat(e.target.value)})}
               inputSymbol="%"
             />
             <button onClick={this.updateConfig}>
