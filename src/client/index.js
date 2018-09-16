@@ -14,8 +14,8 @@ class App extends React.Component{
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.state.login === true) return false
-    return true
+    if (this.state.login === true) return false;
+    return true;
   }
 
   login = (password) => {
@@ -49,7 +49,7 @@ class App extends React.Component{
 
   render() {
     if (this.state.login === false) {
-      return(
+      return (
         <div id="login">
           <form onSubmit={this.login(this.state.password)}>
             <label>Password:</label><br />
@@ -64,8 +64,8 @@ class App extends React.Component{
           </form>
         </div>
       );
-    }else{
-      return(
+    } else {
+      return (
         <div>
           <HeaderWithRouter />
           <Main />
