@@ -20,13 +20,13 @@ export default class Main extends React.Component {
     CONFIG.API_currencies = API_currencies.slice(0, -1);
     CONFIG.API_timestamp  = new Date();
 
+    this._timerInterval = null;
+
     this.state = {
       config: CONFIG,
       currencies: dict,
-      timer: null
     };
 
-    this.updateExchangeRates();
   }
 
   updateCurrencyBalance = (key, balance) => {
@@ -44,13 +44,13 @@ export default class Main extends React.Component {
     if(surcharge >= 0)             config.surcharge     = surcharge;
     if(minCommission >= 0)         config.minCommission = minCommission;
     if(marginPct >= 0)             config.marginPct     = marginPct;
-    clearInterval(this.state.timer);
+    this.setState({
+       config: config
+    });
+
+    clearInterval(this._timerInterval);
     if (refreshEveryInSeconds > 0) {
-      const timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
-      this.setState({
-         config: config,
-         timer: timer
-      });
+      this._timerInterval = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
     }
   }
 
@@ -98,17 +98,16 @@ export default class Main extends React.Component {
   }
 
   componentDidMount() {
+    this.updateExchangeRates();
+
     const refreshEveryInSeconds = this.state.config.refreshEveryInSeconds;
     if (refreshEveryInSeconds > 0) {
-      const timer = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
-      this.setState({
-        timer: timer
-      });
+      this._timerInterval = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.state.timer);
+    clearInterval(this._timerInterval);
   }
 
   render() {
