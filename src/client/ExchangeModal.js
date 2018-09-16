@@ -1,11 +1,8 @@
-import React, { Component } from "react";
+import React, { PureComponent, Component } from "react";
 
-export class ExchangeModalTable extends React.Component {
+export class ExchangeModalTable extends React.PureComponent {
   render() {
-    const exchangeRate = this.props.exchangeRate;
-    const subtotal = this.props.subtotal;
-    const commission = this.props.commission;
-    const total = this.props.total;
+    const {exchangeRate, subtotal, commission, total} = this.props;
 
     return (
       <table>

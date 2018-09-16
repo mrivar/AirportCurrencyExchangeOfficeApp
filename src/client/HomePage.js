@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, PureComponent } from "react";
 import ExchangeModal from './ExchangeModal';
 import "./css/styles.css";
 
@@ -56,12 +56,12 @@ export class CurrencyTable extends React.Component {
   }
 }
 
-export class InformationPanel extends React.Component {
+export class InformationPanel extends React.PureComponent {
   render() {
     const success = this.props.success;
     if (success === true) {
-      const name = this.props.homeCurrencyInfo.name;
-      const balance = this.props.homeCurrencyInfo.balance.toFixed(2);
+      const name = this.props.homeCurrencyName;
+      const balance = this.props.homeCurrencyBalance.toFixed(2);
       let API_timestamp = this.props.API_timestamp;
 
       // Translate timestamp to legible date
@@ -137,7 +137,8 @@ export default class HomePage extends React.Component {
           updateCurrencyBalance={this.props.updateCurrencyBalance}
         />
         <InformationPanel
-          homeCurrencyInfo={homeCurrencyInfo}
+          homeCurrencyName={homeCurrencyInfo.name}
+          homeCurrencyBalance={homeCurrencyInfo.balance}
           API_timestamp={config.API_timestamp}
           success={config.success}
         />
