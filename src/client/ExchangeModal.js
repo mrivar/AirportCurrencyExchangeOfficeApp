@@ -1,6 +1,7 @@
 import React, { PureComponent, Component } from "react";
+import { connect } from "react-redux";
 
-export class ExchangeModalTable extends React.PureComponent {
+class ExchangeModalTable extends React.PureComponent {
   render() {
     const {exchangeRate, subtotal, commission, total} = this.props;
 
@@ -29,7 +30,16 @@ export class ExchangeModalTable extends React.PureComponent {
   }
 }
 
-export default class ExchangeModal extends React.Component {
+const mapStateToProps = state => {
+  return {
+    commissionPct: state.adminConfigReducer.commissionPct,
+    surcharge: state.adminConfigReducer.surcharge,
+    minCommission: state.adminConfigReducer.minCommission,
+    marginPct: state.adminConfigReducer.marginPct
+  };
+};
+
+class ExchangeModal extends React.Component {
   state = {
     quantity: 100,
     isBuying: true
@@ -73,30 +83,29 @@ export default class ExchangeModal extends React.Component {
     const active = this.props.active ? 'active' : '';
     const isBuying = this.state.isBuying;
     const buyOrSell = isBuying ? 'Buy' : 'Sell';
-    const config = this.props.config;
-    const modalCurrency = this.props.modalCurrency;
-    const marginPct= config.marginPct;
+    const {modalCurrency,marginPct,commissionPct,surcharge,minCommission,modalCurrencySymbol,closeModal} = this.props;
+
     let exchangeRate = this.props.modalCurrencyRate;
 
     if (isBuying) exchangeRate *= 1 + marginPct/100;
     else          exchangeRate *= 1 - marginPct/100;
 
     const subtotal = exchangeRate * this.state.quantity;
-    const commission = Math.max(subtotal*config.commissionPct/100 + config.surcharge, config.minCommission);
+    const commission = Math.max(subtotal*commissionPct/100 + surcharge, minCommission);
     const total = subtotal + commission;
 
     return (
       <div id="lightbox" className={active}>
-        <div className="auxiliarModal" onClick={this.props.closeModal}></div>
+        <div className="auxiliarModal" onClick={closeModal}></div>
         <div className="modal">
 
           <div className="modalHead">
             <p>{buyOrSell} {modalCurrency}</p>
-            <p onClick={this.props.closeModal}>x</p>
+            <p onClick={closeModal}>x</p>
           </div>
 
           <div className="modalInput">
-            <span>{this.props.modalCurrencySymbol}</span>
+            <span>{modalCurrencySymbol}</span>
             <input 
               type="number"
               placeholder="100"
@@ -115,7 +124,7 @@ export default class ExchangeModal extends React.Component {
 
           <div className="modalTail">
             <button onClick={(e) => this.buyOrSellCurrency(total, e)}>{buyOrSell}</button>
-            <button onClick={this.props.closeModal}>Cancel</button>
+            <button onClick={closeModal}>Cancel</button>
             <div className="changeTwoOptions">
               <span id="bg" className={buyOrSell}></span>
               <span>Buy</span>
@@ -129,3 +138,5 @@ export default class ExchangeModal extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(ExchangeModal);

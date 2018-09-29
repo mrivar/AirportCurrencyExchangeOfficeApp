@@ -1,6 +1,9 @@
 import React , {Component} from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import { BrowserRouter, withRouter } from 'react-router-dom'
+
+import store from './redux/store';
 import Main from './Main';
 import Header from './Header';
 import "./css/login.css";
@@ -71,8 +74,10 @@ class App extends React.Component{
 }
 
 ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>),
+  <Provider store={store}>
+    <BrowserRouter>
+      <App />
+    </BrowserRouter>
+  </Provider>),
   document.getElementById('root')
 );

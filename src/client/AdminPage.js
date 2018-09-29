@@ -1,7 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { changeAdminConfig } from "./redux/actions/actions";
 import "./css/admin.css";
 
-export class AdminInput extends React.Component {
+class AdminInput extends React.Component {
   render() {
     return(
       <p>
@@ -21,23 +23,40 @@ export class AdminInput extends React.Component {
   }
 }
 
-export default class AdminPage extends React.Component {
+const mapStateToProps = state => {
+  return {
+    refreshEveryInSeconds: state.adminConfigReducer.refreshEveryInSeconds,
+    commissionPct: state.adminConfigReducer.commissionPct,
+    surcharge: state.adminConfigReducer.surcharge,
+    minCommission: state.adminConfigReducer.minCommission,
+    marginPct: state.adminConfigReducer.marginPct
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    changeAdminConfig: (refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) => dispatch(
+      changeAdminConfig(refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct)
+    )
+  };
+};
+
+class AdminPage extends React.Component {
   constructor(props) {
     super(props);
 
-    const config = this.props.config;
     this.state = {
-      refreshEveryInSeconds : config.refreshEveryInSeconds,
-      commissionPct : config.commissionPct,
-      surcharge : config.surcharge,
-      minCommission : config.minCommission,
-      marginPct : config.marginPct,
+      refreshEveryInSeconds : this.props.refreshEveryInSeconds,
+      commissionPct : this.props.commissionPct,
+      surcharge : this.props.surcharge,
+      minCommission : this.props.minCommission,
+      marginPct : this.props.marginPct,
     }
   }
 
   updateConfig = (e) => {
     e.preventDefault();
-    this.props.updateConfig(
+    this.props.changeAdminConfig(
       this.state.refreshEveryInSeconds,
       this.state.commissionPct,
       this.state.surcharge,
@@ -96,3 +115,5 @@ export default class AdminPage extends React.Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminPage);
