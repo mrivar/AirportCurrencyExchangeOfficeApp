@@ -8,3 +8,21 @@ export const changeAdminConfig = (refreshEveryInSeconds, commissionPct, surcharg
   minCommission,
   marginPct,
 });
+
+export const updateCurrencyBalance = (key, balance) => ({
+  type: types.UPDATE_CURRENCY,
+  key,
+  balance
+});
+
+export const updateExchangeRates = (currencies, success, API_timestamp) => ({
+  type: types.UPDATE_EXCHANGE_RATES,
+  currencies,
+  success,
+  API_timestamp
+});
+
+export const updateExchangeRatesFailed = (success=false) => ({
+  type: types.UPDATE_EXCHANGE_RATES_FAILED,
+  success
+});
