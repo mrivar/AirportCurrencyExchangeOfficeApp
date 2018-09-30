@@ -1,8 +1,9 @@
 import React, { Component, PureComponent } from "react";
+import { connect } from "react-redux";
 import ExchangeModal from './ExchangeModal';
 import "./css/styles.css";
 
-export class CurrencyRow extends React.Component {
+class CurrencyRow extends React.Component {
 
   openModal = () => {
     this.props.openModal(this.props.currency.name);
@@ -36,7 +37,7 @@ export class CurrencyRow extends React.Component {
   }
 }
 
-export class CurrencyTable extends React.Component {
+class CurrencyTable extends React.Component {
   render() {
     const rows = this.props.rows;
 
@@ -56,7 +57,7 @@ export class CurrencyTable extends React.Component {
   }
 }
 
-export class InformationPanel extends React.PureComponent {
+class InformationPanel extends React.PureComponent {
   render() {
     const success = this.props.success;
     if (success === true) {
@@ -79,7 +80,17 @@ export class InformationPanel extends React.PureComponent {
   }
 }
 
-export default class HomePage extends React.Component {
+const mapStateToProps = state => {
+  return {
+    marginPct: state.adminConfigReducer.marginPct,
+    success: state.currenciesReducer.success,
+    currencies: state.currenciesReducer.currencies,
+    homeCurrency: state.currenciesReducer.homeCurrency,
+    API_timestamp: state.currenciesReducer.API_timestamp
+  };
+};
+
+class HomePage extends React.Component {
   state = {
     activateModal: false,
     modalCurrency: 'USD'
@@ -100,10 +111,10 @@ export default class HomePage extends React.Component {
 
   render() {
     const rows = [];
-    const config = this.props.config;
+    const success = this.props.success;
     const currencies = this.props.currencies;
-    const marginPct  = config.marginPct;
-    const homeCurrency = config.homeCurrency;
+    const marginPct  = this.props.marginPct;
+    const homeCurrency = this.props.homeCurrency;
     let homeCurrencyInfo = {};
 
     Object.keys(currencies).map((key, index) => {
@@ -117,7 +128,7 @@ export default class HomePage extends React.Component {
           currency={currency}
           marginPct={marginPct}
           openModal={this.openModal}
-          success={config.success}
+          success={success}
           key={currency.name} />
       );
     });
@@ -127,7 +138,7 @@ export default class HomePage extends React.Component {
         <ExchangeModal
           active={this.state.activateModal}
           closeModal={this.closeModal}
-          config={config}
+          sucess={success}
           modalCurrency={this.state.modalCurrency}
           modalCurrencyBalance={currencies[this.state.modalCurrency].balance}
           modalCurrencySymbol={currencies[this.state.modalCurrency].symbol}
@@ -139,11 +150,13 @@ export default class HomePage extends React.Component {
         <InformationPanel
           homeCurrencyName={homeCurrencyInfo.name}
           homeCurrencyBalance={homeCurrencyInfo.balance}
-          API_timestamp={config.API_timestamp}
-          success={config.success}
+          API_timestamp={this.props.API_timestamp}
+          success={success}
         />
         <CurrencyTable rows={rows} />
       </div>
     );
   }
 }
+
+export default connect(mapStateToProps)(HomePage);

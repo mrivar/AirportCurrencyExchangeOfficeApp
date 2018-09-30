@@ -1,53 +1,50 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom'
+
+import { updateExchangeRates, updateExchangeRatesFailed } from "./redux/actions/actions";
 import HomePage from './HomePage';
 import AdminPage from './AdminPage';
 import CONFIG from './data/config.json';
 
-export default class Main extends React.Component {
+const mapStateToProps = state => {
+  return {
+    refreshEveryInSeconds: state.adminConfigReducer.refreshEveryInSeconds,
+    API_access_key: state.currenciesReducer.API_access_key,
+    API_currencies: state.currenciesReducer.API_currencies,
+    homeCurrency: state.currenciesReducer.homeCurrency,
+    currencies: state.currenciesReducer.currencies
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateExchangeRates: (currencies, success, API_timestamp) => dispatch(updateExchangeRates(currencies, success, API_timestamp)),
+    updateExchangeRatesFailed: () => dispatch(updateExchangeRatesFailed())
+  };
+};
+
+class Main extends React.Component {
   constructor(props) {
     super(props);
-
-    // Create currency dictionary & currency API list
-    const currencies = CONFIG.currencies;
-    const dict = {};
-    let API_currencies = "";
-    currencies.forEach((currency) => {
-      dict[currency.name] = currency;
-      dict[currency.name].balance = currency.initialBalance;
-      API_currencies += `${currency.name},`;
-    });
-    CONFIG.API_currencies = API_currencies.slice(0, -1);
-    CONFIG.API_timestamp  = new Date();
-
     this._timerInterval = null;
-
-    this.state = {
-      config: CONFIG,
-      currencies: dict,
-    };
-
   }
 
-  updateCurrencyBalance = (key, balance) => {
-    const currencies = this.state.currencies;
-    currencies[key].balance = balance;
-    this.setState({
-       currencies: currencies
-    });
+  componentDidMount() {
+    this.updateExchangeRates();
+
+    const refreshEveryInSeconds = this.props.refreshEveryInSeconds;
+    if (refreshEveryInSeconds > 0) {
+      this._timerInterval = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
+    }
   }
 
-  updateConfig = (refreshEveryInSeconds, commissionPct, surcharge, minCommission, marginPct) => {
-    const config = this.state.config;
-    if(refreshEveryInSeconds >= 0) config.refreshEveryInSeconds = refreshEveryInSeconds;
-    if(commissionPct >= 0)         config.commissionPct = commissionPct;
-    if(surcharge >= 0)             config.surcharge     = surcharge;
-    if(minCommission >= 0)         config.minCommission = minCommission;
-    if(marginPct >= 0)             config.marginPct     = marginPct;
-    this.setState({
-       config: config
-    });
+  componentWillUnmount() {
+    clearInterval(this._timerInterval);
+  }
 
+  updateTimerInterval = (refreshEveryInSeconds) => {
     clearInterval(this._timerInterval);
     if (refreshEveryInSeconds > 0) {
       this._timerInterval = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
@@ -55,15 +52,17 @@ export default class Main extends React.Component {
   }
 
   updateExchangeRates = () => {
-    const config = this.state.config;
-    const currencies = this.state.currencies;
-    fetch(`http://apilayer.net/api/live?access_key=${config.API_access_key}&currencies=${config.API_currencies}&source=${config.homeCurrency}`)
+    const currencies = this.props.currencies;
+    const API_access_key = this.props.API_access_key;
+    const API_currencies = this.props.API_currencies;
+    const homeCurrency = this.props.homeCurrency;
+    fetch(`http://apilayer.net/api/live?access_key=${API_access_key}&currencies=${API_currencies}&source=${homeCurrency}`)
       .then((response) => response.json())
       .then(data => {
 
         // Update exchange rates through API
         Object.keys(currencies).map((key, index) => {
-          const currency_json_name = `${config.homeCurrency}${key}`;
+          const currency_json_name = `${homeCurrency}${key}`;
           const oldCurrencyRate = currencies[key].currencyRate;
           currencies[key].currencyRate = 1/data.quotes[currency_json_name];
 
@@ -77,37 +76,15 @@ export default class Main extends React.Component {
           }
         });
 
-        //config.API_timestamp = new Date(data.timestamp * 1000);
+        //API_timestamp = new Date(data.timestamp * 1000);
         // Last exchange rate update should be the one above. As we are adding stochastic randomness we use this exact moment.
-        config.API_timestamp = new Date();
-
         // Update exchange rates in state
-        config.success = true;
-        this.setState({
-          config: config,
-          currencies: currencies
-        });
+        this.props.updateExchangeRates(currencies, true, new Date());
       })
       .catch(error => {
         console.warn(error);
-        config.success = false;
-        this.setState({
-          config: config
-        });
+        this.props.updateExchangeRatesFailed();
       });
-  }
-
-  componentDidMount() {
-    this.updateExchangeRates();
-
-    const refreshEveryInSeconds = this.state.config.refreshEveryInSeconds;
-    if (refreshEveryInSeconds > 0) {
-      this._timerInterval = setInterval(this.updateExchangeRates, refreshEveryInSeconds * 1000);
-    }
-  }
-
-  componentWillUnmount() {
-    clearInterval(this._timerInterval);
   }
 
   render() {
@@ -115,16 +92,11 @@ export default class Main extends React.Component {
       <main>
         <Switch>
           <Route exact path='/' render={() => (
-            <HomePage
-              config={this.state.config}
-              currencies={this.state.currencies}
-              updateCurrencyBalance={this.updateCurrencyBalance}
-            />
+            <HomePage />
           )}/>
           <Route exact path='/admin' render={() => (
             <AdminPage
-              config={this.state.config}
-              updateConfig={this.updateConfig}
+              updateTimerInterval={this.updateTimerInterval}
             />
           )}/>
         </Switch>
@@ -133,3 +105,5 @@ export default class Main extends React.Component {
     );
   }
 }
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

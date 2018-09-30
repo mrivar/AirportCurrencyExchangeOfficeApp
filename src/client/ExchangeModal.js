@@ -1,5 +1,6 @@
 import React, { PureComponent, Component } from "react";
 import { connect } from "react-redux";
+import { updateCurrencyBalance } from "./redux/actions/actions";
 
 class ExchangeModalTable extends React.PureComponent {
   render() {
@@ -39,6 +40,14 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    updateCurrencyBalance: (key, balance) => dispatch(
+      updateCurrencyBalance(key, balance)
+    ),
+  };
+};
+
 class ExchangeModal extends React.Component {
   state = {
     quantity: 100,
@@ -46,7 +55,7 @@ class ExchangeModal extends React.Component {
   }
 
   buyOrSellCurrency = (total) => {
-    const success = this.props.config.success;
+    const success = this.props.success;
     if (success === false) {
       alert('There was an error while retrieving the currencies exchange rates. Transactions are not allowed while we solve this problem.');
     }else{
@@ -139,4 +148,4 @@ class ExchangeModal extends React.Component {
   }
 }
 
-export default connect(mapStateToProps)(ExchangeModal);
+export default connect(mapStateToProps, mapDispatchToProps)(ExchangeModal);

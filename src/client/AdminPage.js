@@ -50,7 +50,7 @@ class AdminPage extends React.Component {
       commissionPct : this.props.commissionPct,
       surcharge : this.props.surcharge,
       minCommission : this.props.minCommission,
-      marginPct : this.props.marginPct,
+      marginPct : this.props.marginPct
     }
   }
 
@@ -63,6 +63,8 @@ class AdminPage extends React.Component {
       this.state.minCommission,
       this.state.marginPct
     );
+
+    this.props.updateTimerInterval(this.state.refreshEveryInSeconds);
   }
 
   render() {
