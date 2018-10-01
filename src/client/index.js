@@ -7,12 +7,21 @@ import store from './redux/store';
 import App from './App';
 import "./css/login.css";
 
-import auth from './auth';
+import Auth from './auth';
+import history from './history';
+
+const auth = new Auth();
+
+const handleAuthentication = (nextState, replace) => {
+  if (/access_token|id_token|error/.test(nextState.location.hash)) {
+    auth.handleAuthentication();
+  }
+}
 
 ReactDOM.render((
   <Provider store={store}>
     <BrowserRouter>
-      <App auth={auth} />
+      <App auth={auth} handleAuthentication={handleAuthentication}/>
     </BrowserRouter>
   </Provider>),
   document.getElementById('root')

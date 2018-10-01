@@ -2,12 +2,12 @@ import auth0 from 'auth0-js';
 
 import history from './history';
 
-class Auth {
+export default class Auth {
   // Please use your own credentials here
   auth0 = new auth0.WebAuth({
     domain: 'mrivar.eu.auth0.com',
     clientID: 'AsTTJr9_06UwjZhp53vh8sHILsbqXV2M',
-    redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback' : 'https://appbaseio-apps.github.io/reactivesearch-auth0-example/callback',
+    redirectUri: process.env.NODE_ENV === 'development' ? 'http://localhost:3000/callback' : 'http://currency-app-martin.herokuapp.com/callback',
     responseType: 'token id_token',
     scope: 'openid'
   });
@@ -58,14 +58,3 @@ class Auth {
     return new Date().getTime() < expiresAt;
   }
 }
-
-
-const auth = new Auth();
-
-export const handleAuthentication = (nextState, replace) => {
-  if (/access_token|id_token|error/.test(nextState.location.hash)) {
-    auth.handleAuthentication();
-  }
-}
-
-export default auth;

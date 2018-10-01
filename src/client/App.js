@@ -9,8 +9,8 @@ import AdminPage from './AdminPage';
 import CONFIG from './data/config.json';
 
 import Callback from './Callback';
-import { handleAuthentication } from './auth';
 import history from './history';
+import { PrivateRoute } from './auth';
 
 const HeaderWithRouter = withRouter(props => <Header {...props}/>);
 
@@ -39,6 +39,10 @@ class App extends React.Component {
 
   login = () => {
     this.props.auth.login();
+  }
+
+  logout = () => {
+    this.props.auth.logout();
   }
 
   componentDidMount() {
@@ -105,34 +109,26 @@ class App extends React.Component {
       <div>
         <HeaderWithRouter />
         <main>
-        {
-          isAuthenticated()
-          ?
-            <Switch history={history}>
               <Route exact path='/' render={() => (
-                <HomePage />
+                  isAuthenticated() ? (
+                    <HomePage />
+                ) : (
+                    <button onClick={this.login()}>Log In</button>
+                )
               )}/>
               <Route exact path='/admin' render={() => (
-                <AdminPage
-                  updateTimerInterval={this.updateTimerInterval}
-                />
+                  isAuthenticated() ? (
+                    <AdminPage
+                      updateTimerInterval={this.updateTimerInterval}
+                    />
+                  ) : (
+                    <Redirect to="/" />
+                  )
               )}/>
               <Route path="/callback" render={(props) => {
-                handleAuthentication(props);
+                this.props.handleAuthentication(props);
                 return <Callback {...props} />
               }}/>
-            </Switch>
-          :
-            <Switch history={history}>
-              <Route exact path='/' render={() => (
-                <button onclick={this.login()}>Log In</button>
-              )}/>
-              <Route path="/callback" render={(props) => {
-                handleAuthentication(props);
-                return <Callback {...props} />
-              }}/>
-            </Switch>
-          }
         </main>
       </div>
     );
