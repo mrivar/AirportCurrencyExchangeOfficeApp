@@ -125,7 +125,7 @@ class App extends React.Component {
                     <Redirect to="/" />
                   )
               )}/>
-              <Route path="/callback" render={(props) => {
+              <Route exact path="/callback" render={(props) => {
                 this.props.handleAuthentication(props);
                 return <Callback {...props} />
               }}/>
