@@ -1,12 +1,18 @@
 import React, { Component } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { connect } from "react-redux";
-import { withRouter } from 'react-router-dom'
 
 import { updateExchangeRates, updateExchangeRatesFailed } from "./redux/actions/actions";
+import Header from './Header';
 import HomePage from './HomePage';
 import AdminPage from './AdminPage';
 import CONFIG from './data/config.json';
+
+import Callback from './Callback';
+import { handleAuthentication } from './auth';
+import history from './history';
+
+const HeaderWithRouter = withRouter(props => <Header {...props}/>);
 
 const mapStateToProps = state => {
   return {
@@ -25,10 +31,14 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-class Main extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
     this._timerInterval = null;
+  }
+
+  login = () => {
+    this.props.auth.login();
   }
 
   componentDidMount() {
@@ -87,23 +97,46 @@ class Main extends React.Component {
       });
   }
 
+
   render() {
+    const { isAuthenticated } = this.props.auth;
+
     return (
-      <main>
-        <Switch>
-          <Route exact path='/' render={() => (
-            <HomePage />
-          )}/>
-          <Route exact path='/admin' render={() => (
-            <AdminPage
-              updateTimerInterval={this.updateTimerInterval}
-            />
-          )}/>
-        </Switch>
-      </main>
-      
+      <div>
+        <HeaderWithRouter />
+        <main>
+        {
+          isAuthenticated()
+          ?
+            <Switch history={history}>
+              <Route exact path='/' render={() => (
+                <HomePage />
+              )}/>
+              <Route exact path='/admin' render={() => (
+                <AdminPage
+                  updateTimerInterval={this.updateTimerInterval}
+                />
+              )}/>
+              <Route path="/callback" render={(props) => {
+                handleAuthentication(props);
+                return <Callback {...props} />
+              }}/>
+            </Switch>
+          :
+            <Switch history={history}>
+              <Route exact path='/' render={() => (
+                <button onclick={this.login()}>Log In</button>
+              )}/>
+              <Route path="/callback" render={(props) => {
+                handleAuthentication(props);
+                return <Callback {...props} />
+              }}/>
+            </Switch>
+          }
+        </main>
+      </div>
     );
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
