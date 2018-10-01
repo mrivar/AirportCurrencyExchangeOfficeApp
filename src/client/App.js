@@ -41,10 +41,6 @@ class App extends React.Component {
     this.props.auth.login();
   }
 
-  logout = () => {
-    this.props.auth.logout();
-  }
-
   componentDidMount() {
     this.updateExchangeRates();
 
@@ -109,26 +105,28 @@ class App extends React.Component {
       <div>
         <HeaderWithRouter />
         <main>
-              <Route exact path='/' render={() => (
-                  isAuthenticated() ? (
-                    <HomePage />
+          <Switch>
+            <Route exact path='/' render={() => (
+                isAuthenticated() ? (
+                  <HomePage />
+              ) : (
+                  <button onClick={this.login()}>Log In</button>
+              )
+            )}/>
+            <Route exact path='/admin' render={() => (
+                isAuthenticated() ? (
+                  <AdminPage
+                    updateTimerInterval={this.updateTimerInterval}
+                  />
                 ) : (
-                    <button onClick={this.login()}>Log In</button>
+                  <Redirect to="/" />
                 )
-              )}/>
-              <Route exact path='/admin' render={() => (
-                  isAuthenticated() ? (
-                    <AdminPage
-                      updateTimerInterval={this.updateTimerInterval}
-                    />
-                  ) : (
-                    <Redirect to="/" />
-                  )
-              )}/>
-              <Route exact path="/callback" render={(props) => {
-                this.props.handleAuthentication(props);
-                return <Callback {...props} />
-              }}/>
+            )}/>
+            <Route exact path="/callback" render={(props) => {
+              this.props.handleAuthentication(props);
+              return <Callback {...props} />
+            }}/>
+          </Switch>
         </main>
       </div>
     );
